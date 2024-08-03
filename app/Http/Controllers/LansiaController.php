@@ -83,6 +83,7 @@ class LansiaController extends Controller
             'tempat_lahir' => $data['tempat_lahir'],
             'tanggal_lahir' => $data['tanggal_lahir'],
             'foto' => $data['foto'] ?? null,
+            'telegram_username' => $data['telegram_username'] ?? null,
         ];
 
         // Buat array data untuk tabel 'users'
@@ -145,19 +146,40 @@ class LansiaController extends Controller
         // get all request from frontsite
         $data = $request->all();
 
+        // Handle upload foto
         if ($request->hasFile('foto')) {
-            $destinationPath = 'public/assets/file-lansia';
             $file = $request->file('foto');
             $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
             $fullFileName = $fileName."-".time().'.'.$file->getClientOriginalExtension();
-            $path = $request->file('foto')->storeAs($destinationPath, $fullFileName);
+
+            // Simpan ke folder file-lansia
+            $destinationPathLansia = 'public/assets/file-lansia';
+            $pathLansia = $request->file('foto')->storeAs($destinationPathLansia, $fullFileName);
+
+            // Simpan ke folder file-user
+            $destinationPathUser = 'public/assets/file-user';
+            $pathUser = $request->file('foto')->storeAs($destinationPathUser, $fullFileName);
 
             $data['foto'] = $fullFileName;
         }
 
-        // update to database
-        $lansia->update($data);
+        // Buat array data untuk tabel 'lansia'
+        $lansiaData = [
+            'foto' => $data['foto'] ?? $lansia->foto,
+            'telegram_username' => $data['telegram_username'] ?? $lansia->telegram_username,
+        ];
+
+        // Buat array data untuk tabel 'users'
+        $userData = [
+            'foto' => $data['foto'] ?? $lansia->user->foto,
+        ];
+
+        // Kirim data ke database
+        $lansia->update($lansiaData);
+        if ($lansia->user) {
+            $lansia->user->update($userData);
+        }
 
         alert()->success('Berhasil', 'Berhasil Memperbarui Data Lansia');
         return redirect()->route('lansia.index');

@@ -26,6 +26,7 @@ class Lansia extends Model
         'tempat_lahir',
         'tanggal_lahir',
         'foto',
+        'telegram_username',
         'chat_id',
         'created_at',
         'updated_at',
@@ -40,7 +41,7 @@ class Lansia extends Model
     // Relasi one to many
     public function user()
     {
-        return $this->hasMany('App\Models\User', 'lansia_id');
+        return $this->hasOne('App\Models\User', 'lansia_id');
     }
 
     // Relasi one to many

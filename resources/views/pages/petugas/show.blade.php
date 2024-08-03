@@ -31,4 +31,8 @@
         <th>Tanggal Lahir</th>
         <td>{{ isset($petugas->tanggal_lahir) ? $petugas->tanggal_lahir : 'N/A' }}</td>
     </tr>
+    <tr>
+        <th>Email</th>
+        <td>{{ isset($petugas->user->email) ? $petugas->user->email : 'N/A' }}</td>
+    </tr>
 </table>

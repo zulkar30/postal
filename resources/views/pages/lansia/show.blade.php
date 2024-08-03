@@ -31,4 +31,12 @@
         <th>Tanggal Lahir</th>
         <td>{{ isset($lansia->tanggal_lahir) ? $lansia->tanggal_lahir : 'N/A' }}</td>
     </tr>
+    <tr>
+        <th>Telegram Username</th>
+        <td>{{ isset($lansia->telegram_username) ? $lansia->telegram_username : 'N/A' }}</td>
+    </tr>
+    <tr>
+        <th>Email</th>
+        <td>{{ isset($lansia->user->email) ? $lansia->user->email : 'N/A' }}</td>
+    </tr>
 </table>

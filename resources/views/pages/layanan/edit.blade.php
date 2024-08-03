@@ -64,8 +64,9 @@
                                                 anda menekan tombol submit.</p>
                                         </div>
 
-                                        <form class="form form-horizontal" action="{{ route('layanan.update', [$layanan->id]) }}"
-                                            method="POST" enctype="multipart/form-data">
+                                        <form class="form form-horizontal"
+                                            action="{{ route('layanan.update', [$layanan->id]) }}" method="POST"
+                                            enctype="multipart/form-data">
 
                                             @method('PUT')
                                             @csrf
@@ -75,134 +76,99 @@
                                                 <h4 class="form-section"><i class="fa fa-edit"></i> Form Layanan</h4>
 
                                                 <div class="form-group row">
-                                                    <label class="col-md-3 label-control" for="nama">Nama <code
-                                                            style="color:red;">required</code></label>
+                                                    <label class="col-md-3 label-control" for="lansia_id">Nama Lansia
+                                                        <code style="color:red;">required</code></label>
                                                     <div class="col-md-9 mx-auto">
-                                                        <input type="text" id="nama" name="nama"
-                                                            class="form-control" placeholder="Nama Lengkap"
-                                                            value="{{ old('nama', isset($layanan) ? $layanan->nama : '') }}"
-                                                            autocomplete="off" required>
+                                                        <select name="lansia_id" id="lansia_id"
+                                                            class="form-control select2">
+                                                            <option
+                                                                value="{{ old('lansia_id', isset($layanan) ? $layanan->lansia_id : '') }}"
+                                                                disabled selected>{{ $layanan->lansia->nama }}</option>
+                                                            @foreach ($lansia as $key => $lansia_item)
+                                                                <option value="{{ $lansia_item->id }}">
+                                                                    {{ $lansia_item->nama }}</option>
+                                                            @endforeach
+                                                        </select>
 
-                                                        @if ($errors->has('nama'))
+                                                        @if ($errors->has('lansia_id'))
                                                             <p style="font-style: bold; color: red;">
-                                                                {{ $errors->first('nama') }}</p>
+                                                                {{ $errors->first('lansia_id') }}</p>
                                                         @endif
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group row">
-                                                    <label class="col-md-3 label-control" for="nik">NIK <code
-                                                            style="color:red;">required</code></label>
+                                                    <label class="col-md-3 label-control" for="berat_badan">Berat Badan
+                                                        <code style="color:red;">required</code></label>
                                                     <div class="col-md-9 mx-auto">
-                                                        <input type="text" id="nik" name="nik"
-                                                            class="form-control" placeholder="NIK"
-                                                            value="{{ old('nik', isset($layanan) ? $layanan->nik : '') }}"
+                                                        <input type="text" id="berat_badan" name="berat_badan"
+                                                            class="form-control" placeholder="Berat Badan"
+                                                            value="{{ old('berat_badan', isset($layanan) ? $layanan->berat_badan : '') }}"
                                                             autocomplete="off" required>
 
-                                                        @if ($errors->has('nik'))
+                                                        @if ($errors->has('berat_badan'))
                                                             <p style="font-style: bold; color: red;">
-                                                                {{ $errors->first('nik') }}</p>
-                                                        @endif
-                                                    </div>
-                                                </div>
-
-                                                <div
-                                                class="form-group row {{ $errors->has('jenis_kelamin') ? 'has-error' : '' }}">
-                                                <label class="col-md-3 label-control">Jenis Kelamin <code
-                                                        style="color:red;">required</code></label>
-                                                <div class="col-md-9 mx-auto">
-                                                    <select name="jenis_kelamin" id="jenis_kelamin"
-                                                        class="form-control select2" required>
-                                                        <option
-                                                            value="{{ old('jenis_kelamin', isset($layanan) ? $layanan->jenis_kelamin : '') }}"
-                                                            disabled selected>
-                                                            @if ($layanan->jenis_kelamin == 'laki-laki')
-                                                                <span>Laki-laki</span>
-                                                            @else
-                                                                <span>Perempuan</span>
-                                                            @endif
-                                                        </option>
-                                                        <option value="1">Laki-laki</option>
-                                                        <option value="2">Perempuan</option>
-                                                    </select>
-
-                                                    @if ($errors->has('jenis_kelamin'))
-                                                        <p style="font-style: bold; color: red;">
-                                                            {{ $errors->first('jenis_kelamin') }}</p>
-                                                    @endif
-                                                </div>
-                                            </div>
-
-                                                <div class="form-group row">
-                                                    <label class="col-md-3 label-control" for="no_hp">NO HP <code
-                                                            style="color:red;">required</code></label>
-                                                    <div class="col-md-9 mx-auto">
-                                                        <input type="text" id="no_hp" name="no_hp"
-                                                            class="form-control" placeholder="NO HP"
-                                                            value="{{ old('no_hp', isset($layanan) ? $layanan->no_hp : '') }}"
-                                                            autocomplete="off" required>
-
-                                                        @if ($errors->has('no_hp'))
-                                                            <p style="font-style: bold; color: red;">
-                                                                {{ $errors->first('no_hp') }}</p>
+                                                                {{ $errors->first('berat_badan') }}</p>
                                                         @endif
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group row">
-                                                    <label class="col-md-3 label-control" for="tempat_lahir">Tempat Lahir <code
-                                                            style="color:red;">required</code></label>
+                                                    <label class="col-md-3 label-control" for="tinggi_badan">Tinggi Badan
+                                                        <code style="color:red;">required</code></label>
                                                     <div class="col-md-9 mx-auto">
-                                                        <input type="text" id="tempat_lahir" name="tempat_lahir"
-                                                            class="form-control" placeholder="Tempat Lahir"
-                                                            value="{{ old('tempat_lahir', isset($layanan) ? $layanan->tempat_lahir : '') }}"
+                                                        <input type="text" id="tinggi_badan" name="tinggi_badan"
+                                                            class="form-control" placeholder="Tinggi Badan"
+                                                            value="{{ old('tinggi_badan', isset($layanan) ? $layanan->tinggi_badan : '') }}"
                                                             autocomplete="off" required>
 
-                                                        @if ($errors->has('tempat_lahir'))
+                                                        @if ($errors->has('tinggi_badan'))
                                                             <p style="font-style: bold; color: red;">
-                                                                {{ $errors->first('tempat_lahir') }}</p>
+                                                                {{ $errors->first('tinggi_badan') }}</p>
                                                         @endif
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group row">
-                                                    <label class="col-md-3 label-control" for="tanggal_lahir">Tanggal Lahir <code
-                                                            style="color:red;">required</code></label>
+                                                    <label class="col-md-3 label-control" for="tekanan_darah">Tekanan Darah
+                                                        <code style="color:red;">required</code></label>
                                                     <div class="col-md-9 mx-auto">
-                                                        <input type="date" id="tanggal_lahir" name="tanggal_lahir"
-                                                            class="form-control" placeholder="Tanggal Lahir"
-                                                            value="{{ old('tanggal_lahir', isset($layanan) ? $layanan->tanggal_lahir : '') }}"
+                                                        <input type="text" id="tekanan_darah" name="tekanan_darah"
+                                                            class="form-control" placeholder="Tekanan Darah"
+                                                            value="{{ old('tekanan_darah', isset($layanan) ? $layanan->tekanan_darah : '') }}"
                                                             autocomplete="off" required>
 
-                                                        @if ($errors->has('tanggal_lahir'))
+                                                        @if ($errors->has('tekanan_darah'))
                                                             <p style="font-style: bold; color: red;">
-                                                                {{ $errors->first('tanggal_lahir') }}</p>
+                                                                {{ $errors->first('tekanan_darah') }}</p>
                                                         @endif
                                                     </div>
                                                 </div>
 
                                                 <div class="form-group row">
-                                                    <label class="col-md-3 label-control" for="foto">Foto <code
-                                                            style="color:green;">optional</code></label>
+                                                    <label class="col-md-3 label-control" for="keluhan">Keluhan <code
+                                                            style="color:red;">required</code></label>
                                                     <div class="col-md-9 mx-auto">
-                                                        <div class="custom-file">
-                                                            <input type="file" accept="image/png, image/svg, image/jpeg"
-                                                                class="custom-file-input" id="foto" name="foto">
-                                                            <label class="custom-file-label" for="foto"
-                                                                aria-describedby="foto">{{ isset($layanan->foto) ? basename($layanan->foto) : 'Pilih Foto' }}</label>
-                                                        </div>
+                                                        <input type="text" id="keluhan" name="keluhan"
+                                                            class="form-control" placeholder="Keluhan"
+                                                            value="{{ old('keluhan', isset($layanan) ? $layanan->keluhan : '') }}"
+                                                            autocomplete="off" required>
 
-                                                        <p class="text-muted"><small class="text-danger">Hanya dapat
-                                                                mengunggah 1 file</small><small> dan yang dapat digunakan
-                                                                JPEG, SVG, PNG & resolusi harus 100x100, Maksimal ukuran
-                                                                file hanya 10
-                                                                MegaBytes</small></p>
-
-                                                        @if ($errors->has('foto'))
+                                                        @if ($errors->has('keluhan'))
                                                             <p style="font-style: bold; color: red;">
-                                                                {{ $errors->first('foto') }}</p>
+                                                                {{ $errors->first('keluhan') }}</p>
                                                         @endif
+                                                    </div>
+                                                </div>
 
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control">Nama Petugas</label>
+                                                    <div class="col-md-9 mx-auto">
+                                                        <input name="petugas_id" id="petugas_id" type="hidden"
+                                                            value="{{ isset($layanan) ? $layanan->petugas_id : $loggedInUser->petugas->id ?? '' }}">
+                                                        <input type="text" class="form-control"
+                                                            value="{{ isset($layanan) ? $layanan->petugas->nama : $loggedInUser->petugas->nama ?? '' }}"
+                                                            readonly>
                                                     </div>
                                                 </div>
 

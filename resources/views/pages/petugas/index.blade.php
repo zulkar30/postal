@@ -266,7 +266,7 @@
                                                             <th>NIP</th>
                                                             <th>Telepon</th>
                                                             <th>Foto</th>
-                                                            <th style="text-align:center; width:150px;">Aksi</th>
+                                                            <th style="text-align:center;">Tombol Aksi</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -278,7 +278,7 @@
                                                                 <td>{{ $petugas_item->nip ?? '' }}</td>
                                                                 <td>{{ $petugas_item->no_hp ?? '' }}</td>
                                                                 <td><a data-fancybox="gallery"
-                                                                        data-src="{{ request()->getSchemeAndHttpHost() . '/storage/assets/file-petugas' . '/' . $petugas_item->foto }}"
+                                                                        data-src="{{ request()->getSchemeAndHttpHost() . '/storage/assets/file-petugas/' . $petugas_item->foto }}"
                                                                         class="blue accent-4">Lihat</a></td>
                                                                 <td class="text-center">
                                                                     @can('petugas_show')
@@ -336,7 +336,7 @@
                                                             <th>NIP</th>
                                                             <th>Telepon</th>
                                                             <th>Foto</th>
-                                                            <th style="text-align:center; width:150px;">Aksi</th>
+                                                            <th style="text-align:center; width:150px;">Tombol Aksi</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>

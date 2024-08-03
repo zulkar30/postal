@@ -107,6 +107,21 @@
                                                     </div>
 
                                                     <div class="form-group row">
+                                                        <label class="col-md-3 label-control" for="telegram_username">Telegram Username <code
+                                                                style="color:red;">required</code></label>
+                                                        <div class="col-md-9 mx-auto">
+                                                            <input type="text" id="telegram_username" name="telegram_username"
+                                                                class="form-control" placeholder="Telegram Username"
+                                                                value="{{ old('telegram_username') }}" required>
+
+                                                            @if ($errors->has('telegram_username'))
+                                                                <p style="font-style: bold; color: red;">
+                                                                    {{ $errors->first('telegram_username') }}</p>
+                                                            @endif
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group row">
                                                         <label class="col-md-3 label-control" for="nik">NIK <code
                                                                 style="color:red;">required</code></label>
                                                         <div class="col-md-9 mx-auto">

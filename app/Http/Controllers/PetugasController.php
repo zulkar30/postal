@@ -58,7 +58,7 @@ class PetugasController extends Controller
             $file = $request->file('foto');
             $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
-            $fullFileName = $fileName."-".time().'.'.$file->getClientOriginalExtension();
+            $fullFileName = $fileName . "-" . time() . '.' . $file->getClientOriginalExtension();
 
             // Simpan ke folder file-petugas
             $destinationPathPetugas = 'public/assets/file-petugas';
@@ -141,19 +141,46 @@ class PetugasController extends Controller
         // get all request from frontsite
         $data = $request->all();
 
+        // Handle upload foto
         if ($request->hasFile('foto')) {
-            $destinationPath = 'public/assets/file-petugas';
             $file = $request->file('foto');
             $fileName = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
             $extension = pathinfo($file->getClientOriginalName(), PATHINFO_EXTENSION);
-            $fullFileName = $fileName."-".time().'.'.$file->getClientOriginalExtension();
-            $path = $request->file('foto')->storeAs($destinationPath, $fullFileName);
+            $fullFileName = $fileName . "-" . time() . '.' . $file->getClientOriginalExtension();
+
+            // Simpan ke folder file-petugas
+            $destinationPathPetugas = 'public/assets/file-petugas';
+            $pathPetugas = $request->file('foto')->storeAs($destinationPathPetugas, $fullFileName);
+
+            // Simpan ke folder file-user
+            $destinationPathUser = 'public/assets/file-user';
+            $pathUser = $request->file('foto')->storeAs($destinationPathUser, $fullFileName);
 
             $data['foto'] = $fullFileName;
         }
 
-        // update to database
-        $petugas->update($data);
+        // Buat array data untuk tabel 'petugas'
+        $petugasData = [
+            'nama' => $data['nama'] ?? $petugas->nama ?? null,
+            'nip' => $data['nip'] ?? $petugas->nip ?? null,
+            'jenis_kelamin' => $data['jenis_kelamin'] ?? $petugas->jenis_kelamin ?? null,
+            'no_hp' => $data['no_hp'] ?? $petugas->no_hp ?? null,
+            'tempat_lahir' => $data['tempat_lahir'] ?? $petugas->tempat_lahir ?? null,
+            'tanggal_lahir' => $data['tanggal_lahir'] ?? $petugas->tanggal_lahir ?? null,
+            'foto' => $data['foto'] ?? $petugas->foto ?? null,
+        ];
+
+        // Buat array data untuk tabel 'users'
+        $userData = [
+            'name' => $data['nama'] ?? $petugas->user->nama ?? null,
+            'foto' => $data['foto'] ?? $petugas->user->foto ?? null,
+        ];
+
+        // Kirim data ke database
+        $petugas->update($petugasData);
+        if ($petugas->user) {
+            $petugas->user->update($userData);
+        }
 
         alert()->success('Berhasil', 'Berhasil Memperbarui Data Petugas');
         return redirect()->route('petugas.index');

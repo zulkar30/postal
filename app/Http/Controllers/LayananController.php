@@ -92,9 +92,13 @@ class LayananController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Layanan $layanan)
     {
-        //
+        abort_if(Gate::denies('layanan_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $loggedInUser = Auth::user();
+        $lansia = Lansia::orderBy('id', 'asc')->get();
+
+        return view('pages.layanan.edit', compact('layanan', 'lansia', 'loggedInUser'));
     }
 
     /**
@@ -104,9 +108,16 @@ class LayananController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Layanan $layanan)
     {
-        //
+        // get all request from frontsite
+        $data = $request->all();
+
+        // update to database
+        $layanan->update($data);
+
+        alert()->success('Berhasil', 'Berhasil Memperbarui Data Layanan');
+        return redirect()->route('layanan.index');
     }
 
     /**
@@ -115,9 +126,14 @@ class LayananController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Layanan $layanan)
     {
-        //
+        abort_if(Gate::denies('layanan_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        $layanan->delete();
+
+        alert()->success('Berhasil', 'Berhasil Menghapus Data Layanan');
+        return back();
     }
 
     public function print($id)

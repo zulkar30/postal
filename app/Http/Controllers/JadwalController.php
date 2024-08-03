@@ -11,6 +11,7 @@ use File;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Telegram\Bot\Api;
 
 class JadwalController extends Controller
 {
@@ -18,6 +19,7 @@ class JadwalController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->telegram = new Api('7241108765:AAHqNh_LYt-vAdHxdWtVpFlksPJ7r5wgBiE');
     }
     /**
      * Display a listing of the resource.
@@ -60,7 +62,6 @@ class JadwalController extends Controller
 
         $this->sendScheduleToLansia($jadwal);
 
-        // dd($jadwal);
         // Sweetalert
         alert()->success('Berhasil', 'Jadwal Berhasil dibuat dan Notifikasi Berhasil dikirim');
         // Tempat akan ditampilkannya Sweetalert
@@ -69,45 +70,27 @@ class JadwalController extends Controller
 
     private function sendScheduleToLansia($jadwal)
     {
-        $lansias = Lansia::all();
+        $lansias = Lansia::whereNotNull('chat_id')->get();
+        // dd($lansias);
         foreach ($lansias as $lansia) {
-            $message = "Jadwal Pemeriksaan Baru:\n"
-                     . "Tanggal: " . $jadwal->tanggal_periksa . "\n"
-                     . "Jam: " . $jadwal->jam_periksa . "\n"
-                     . "Lokasi: " . $jadwal->lokasi_periksa;
+            if (!empty($lansia->chat_id)) {
+                $pesan =
+                    "PENGUMUMAN\n"
+                    . "Diberitahukan Kepada Bapak/Ibu " . $lansia->nama . " bahwa pada:\n"
+                    . "Tanggal: " . $jadwal->tanggal . "\n"
+                    . "Jam: " . $jadwal->jam . "\n"
+                    . "Lokasi: " . $jadwal->lokasi . "\n"
+                    . "Kegiatan: " . $jadwal->kegiatan . "\n"
+                    . "Diharapkan Bapak/Ibu " . $lansia->nama . " dapat hadir sesuai dengan jadwal yang telah ditentukan. Terimakasih";
 
-            $this->sendMessageToTelegram($lansia->chat_id, $message);
+                $this->telegram->sendMessage([
+                    'chat_id' => $lansia->chat_id,
+                    'text' => $pesan
+                ]);
+            }
         }
     }
 
-    private function sendMessageToTelegram($chatId, $message)
-    {
-        $token = '7496058716:AAFs2388l9pynhNgIEhOuD7aQlq8_AOwWkg';
-        $url = "https://api.telegram.org/bot{$token}/sendMessage";
-
-        $response = Http::post($url, [
-            'chat_id' => $chatId,
-            'text' => $message
-        ]);
-
-        return $response->json();
-    }
-
-    // private function sendTelegramNotifications($jadwal)
-    // {
-    //     $lansias = Lansia::all();
-    //     $token = '7496058716:AAFs2388l9pynhNgIEhOuD7aQlq8_AOwWkg';
-
-    //     foreach ($lansias as $lansia) {
-    //         $chat_id = $lansia->chat_id;
-    //         $message = "Jadwal baru telah ditambahkan:\n\nTanggal: " . $jadwal->tanggal . "\nJam: " . $jadwal->jam . "\nLokasi: " . $jadwal->lokasi;
-
-    //         $response = Http::post("https://api.telegram.org/bot{$token}/sendMessage", [
-    //             'chat_id' => $chat_id,
-    //             'text' => $message,
-    //         ]);
-    //     }
-    // }
 
     /**
      * Display the specified resource.

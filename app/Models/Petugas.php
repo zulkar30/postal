@@ -29,11 +29,10 @@ class Petugas extends Model
         'updated_at',
     ];
 
-
     // Relasi one to many
     public function user()
     {
-        return $this->hasMany('App\Models\User', 'petugas_id');
+        return $this->hasOne('App\Models\User', 'petugas_id');
     }
 
     // Relasi one to many

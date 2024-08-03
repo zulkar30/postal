@@ -17,10 +17,10 @@ class PetugasSeeder extends Seeder
     {
         $petugas = [
             [
-                'nama'           => 'Zulkarnain',
-                'nip'            => '1403053003005969',
+                'nama'           => 'Abraham Lincoln',
+                'nip'            => '123456789',
                 'jenis_kelamin'  => 'laki-laki',
-                'no_hp'          => '082287354040',
+                'no_hp'          => '083127719390',
                 'tempat_lahir'   => 'Rintis',
                 'tanggal_lahir'  => '2000-03-30',
                 'created_at'     => date('Y-m-d H:i:s'),

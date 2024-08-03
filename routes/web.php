@@ -28,11 +28,6 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-// Route::post('/bot/getupdates', function() {
-//     $updates = Telegram::getUpdates();
-//     return (json_encode($updates));
-// });
-
 // Backsite Page Start
 Route::group(['middleware' => ['auth:sanctum', 'verified']], function(){
 
@@ -58,7 +53,6 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function(){
     Route::get('jadwal/{jadwal}/edit', [JadwalController::class, 'edit'])->name('jadwal.edit');
     Route::put('jadwal/{jadwal}', [JadwalController::class, 'update'])->name('jadwal.update');
     Route::delete('jadwal/{jadwal}', [JadwalController::class, 'destroy'])->name('jadwal.destroy');
-    Route::post('/telegram/webhook', [TelegramController::class, 'handle']);
 
     // Lansia Page
     Route::get('lansia', [LansiaController::class, 'index'])->name('lansia.index');
@@ -84,11 +78,15 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function(){
     Route::get('petugas/{petugas}/edit', [PetugasController::class, 'edit'])->name('petugas.edit');
     Route::put('petugas/{petugas}', [PetugasController::class, 'update'])->name('petugas.update');
     Route::delete('petugas/{petugas}', [PetugasController::class, 'destroy'])->name('petugas.destroy');
+});
 
+Route::group(['prefix' => 'telegram'], function(){
     // Telegram Page
     Route::get('telegram', [TelegramController::class, 'telegram'])->name('telegram');
-    Route::post('send-telegram/{lansia}', [TelegramController::class, 'sendTelegram'])->name('send_telegram');
-    // Route::post('/webhook', [TelegramController::class, 'handleWebhook']);
-    Route::post('/Dgf4b7NcxTavS3ELAZwmuFVnt5YWeMCs6G2qdXRzU9Kp8hBykP/webhook', [TelegramController::class, 'telegramWebhook'])->name('telegramWebhook');
+    Route::get('messages', [TelegramController::class, 'messages']);
+    Route::get('messages/{id}', [TelegramController::class, 'sendMessages']);
+    Route::get('set-webhook', [TelegramController::class, 'setWebhook']);
+    Route::get('delete-webhook', [TelegramController::class, 'deleteWebhook']);
+    Route::match(['get','post'],'webhook/{token}', [TelegramController::class, 'webhook']);
 });
 // Backsite Page End

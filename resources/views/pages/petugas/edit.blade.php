@@ -64,8 +64,9 @@
                                                 anda menekan tombol submit.</p>
                                         </div>
 
-                                        <form class="form form-horizontal" action="{{ route('petugas.update', [$petugas->id]) }}"
-                                            method="POST" enctype="multipart/form-data">
+                                        <form class="form form-horizontal"
+                                            action="{{ route('petugas.update', [$petugas->id]) }}" method="POST"
+                                            enctype="multipart/form-data">
 
                                             @method('PUT')
                                             @csrf
@@ -107,31 +108,33 @@
                                                 </div>
 
                                                 <div
-                                                class="form-group row {{ $errors->has('jenis_kelamin') ? 'has-error' : '' }}">
-                                                <label class="col-md-3 label-control">Jenis Kelamin <code
-                                                        style="color:red;">required</code></label>
-                                                <div class="col-md-9 mx-auto">
-                                                    <select name="jenis_kelamin" id="jenis_kelamin"
-                                                        class="form-control select2" required>
-                                                        <option
-                                                            value="{{ old('jenis_kelamin', isset($petugas) ? $petugas->jenis_kelamin : '') }}"
-                                                            disabled selected>
-                                                            @if ($petugas->jenis_kelamin == 'laki-laki')
-                                                                <span>Laki-laki</span>
-                                                            @else
-                                                                <span>Perempuan</span>
-                                                            @endif
-                                                        </option>
-                                                        <option value="1">Laki-laki</option>
-                                                        <option value="2">Perempuan</option>
-                                                    </select>
+                                                    class="form-group row {{ $errors->has('jenis_kelamin') ? 'has-error' : '' }}">
+                                                    <label class="col-md-3 label-control">Jenis Kelamin <code
+                                                            style="color:red;">required</code></label>
+                                                    <input type="hidden" name="jenis_kelamin"
+                                                        value="{{ old('jenis_kelamin', isset($petugas) ? $petugas->jenis_kelamin : '') }}">
+                                                    <div class="col-md-9 mx-auto">
+                                                        <select name="jenis_kelamin" id="jenis_kelamin"
+                                                            class="form-control select2" required>
+                                                            <option
+                                                                value="{{ old('jenis_kelamin', isset($petugas) ? $petugas->jenis_kelamin : '') }}"
+                                                                disabled selected>
+                                                                @if ($petugas->jenis_kelamin == 'laki-laki')
+                                                                    <span>Laki-laki</span>
+                                                                @else
+                                                                    <span>Perempuan</span>
+                                                                @endif
+                                                            </option>
+                                                            <option value="1">Laki-laki</option>
+                                                            <option value="2">Perempuan</option>
+                                                        </select>
 
-                                                    @if ($errors->has('jenis_kelamin'))
-                                                        <p style="font-style: bold; color: red;">
-                                                            {{ $errors->first('jenis_kelamin') }}</p>
-                                                    @endif
+                                                        @if ($errors->has('jenis_kelamin'))
+                                                            <p style="font-style: bold; color: red;">
+                                                                {{ $errors->first('jenis_kelamin') }}</p>
+                                                        @endif
+                                                    </div>
                                                 </div>
-                                            </div>
 
                                                 <div class="form-group row">
                                                     <label class="col-md-3 label-control" for="no_hp">NO HP <code
@@ -150,8 +153,8 @@
                                                 </div>
 
                                                 <div class="form-group row">
-                                                    <label class="col-md-3 label-control" for="tempat_lahir">Tempat Lahir <code
-                                                            style="color:red;">required</code></label>
+                                                    <label class="col-md-3 label-control" for="tempat_lahir">Tempat Lahir
+                                                        <code style="color:red;">required</code></label>
                                                     <div class="col-md-9 mx-auto">
                                                         <input type="text" id="tempat_lahir" name="tempat_lahir"
                                                             class="form-control" placeholder="Tempat Lahir"
@@ -166,8 +169,8 @@
                                                 </div>
 
                                                 <div class="form-group row">
-                                                    <label class="col-md-3 label-control" for="tanggal_lahir">Tanggal Lahir <code
-                                                            style="color:red;">required</code></label>
+                                                    <label class="col-md-3 label-control" for="tanggal_lahir">Tanggal
+                                                        Lahir <code style="color:red;">required</code></label>
                                                     <div class="col-md-9 mx-auto">
                                                         <input type="date" id="tanggal_lahir" name="tanggal_lahir"
                                                             class="form-control" placeholder="Tanggal Lahir"
@@ -186,7 +189,8 @@
                                                             style="color:green;">optional</code></label>
                                                     <div class="col-md-9 mx-auto">
                                                         <div class="custom-file">
-                                                            <input type="file" accept="image/png, image/svg, image/jpeg"
+                                                            <input type="file"
+                                                                accept="image/png, image/svg, image/jpeg"
                                                                 class="custom-file-input" id="foto" name="foto">
                                                             <label class="custom-file-label" for="foto"
                                                                 aria-describedby="foto">{{ isset($petugas->foto) ? basename($petugas->foto) : 'Pilih Foto' }}</label>

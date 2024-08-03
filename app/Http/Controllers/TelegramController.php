@@ -4,72 +4,69 @@ namespace App\Http\Controllers;
 
 use App\Models\Lansia;
 use Illuminate\Http\Request;
-use Telegram\Bot\Api;
-use Gate;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Telegram\Bot\Api;
 
 class TelegramController extends Controller
 {
-    // Middleware Auth
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->telegram = new Api('7241108765:AAHqNh_LYt-vAdHxdWtVpFlksPJ7r5wgBiE');
     }
 
     public function telegram(Lansia $lansia)
     {
-        // Middleware Gate
-        abort_if(Gate::denies('telegram_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $user = auth()->user();
         $lansiaId = $user->lansia_id;
         $lansia = Lansia::findOrFail($lansiaId);
         return view('pages.telegram.index', compact('lansia'));
     }
 
-    public function sendTelegram(Request $request, Lansia $lansia)
+    public function messages()
     {
-        // Validasi input
-        $request->validate([
-            'telegram_username' => 'required|string',
-        ]);
-
-        // Username Telegram
-        $telegramUsername = $request->telegram_username;
-
-        // URL untuk membuka percakapan dengan bot dan mengirim pesan /start
-        $botUsername = env('TELEGRAM_BOT_USERNAME');
-        $startUrl = "https://t.me/$botUsername?start";
-
-        // Simpan username dan ID lansia ke database
-        $lansia->telegram_username = $telegramUsername;
-        $lansia->save();
-
-        // Sweetalert
-        alert()->success('Berhasil', 'Berhasil Mengirimkan Telegram Username');
-        return back();
+        return $this->telegram->getUpdates();
     }
 
-    public function telegramWebhook()
+    public function sendMessages($id)
     {
-        $telegram = new Api('7241108765:AAHqNh_LYt-vAdHxdWtVpFlksPJ7r5wgBiE');
-        $update = $telegram->getWebhookUpdate();
+        return $this->telegram->sendMessage([
+            'chat_id' => $id,
+            'text' => 'Pesan cobalagi'
+        ]);
+    }
 
-        // $message = $update->getMessage();
+    public function setWebhook()
+    {
+        $url = 'https://postal.my.id';
+        $this->telegram->setWebhook([
+            'url' => $url.'/telegram/webhook/'.'7241108765:AAHqNh_LYt-vAdHxdWtVpFlksPJ7r5wgBiE'
+        ]);
+        return ['message' => 'Webhook is already set'];
+    }
 
-        if (isset($update['message'])) {
-            $isiText = $update['message']['text'];
-            $chatId = $update['message']['from']['id'];
+    public function deleteWebhook()
+    {
+        $this->telegram->removeWebhook();
+        return ['message' => 'Webhook is already delete'];
+    }
 
-            $telegram->sendMessage([
-                'chat_id' => 'zulkar30',
-                'text' => 'Pesan dari webhook'
-            ]);
-        } else {
-            $telegram->sendMessage([
-                'chat_id' => '1775044500',
-                'text' => 'Webhook kosong'
-            ]);
-        }
+    public function webhook($token, Request $request)
+    {
+        $chatId = $request['message']['chat']['id'];
+        $userName = $request['message']['from']['first_name'];
+        $teleName = $request['message']['from']['username'];
+
+        $lansia = Lansia::where('telegram_username', $teleName)->first();
+        $lansia->chat_id = $chatId;
+        $lansia->save();
+
+        $this->telegram->sendMessage([
+            'chat_id' => $chatId,
+            'text' => 'Terimakasih Bapak/Ibu '. $userName . ' Karena Telah Menghubungi Kami, Silahkan Tunggu Informasi Jadwal Kegiatan Dari POSTAL'
+        ]);
+        // Storage::put('logs.txt', json_encode($request->all(), JSON_PRETTY_PRINT));
+        Storage::put('logs.txt', $lansia);
     }
 }

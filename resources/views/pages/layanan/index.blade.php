@@ -222,7 +222,7 @@
                                                             <th>Tekanan Darah</th>
                                                             <th>Keluhan</th>
                                                             <th>Petugas</th>
-                                                            <th style="text-align:center; width:150px;">Aksi</th>
+                                                            <th style="text-align:center; width:150px;">Aksi Admin</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -231,9 +231,9 @@
                                                                 <td>{{ date('d/m/Y', strtotime($layanan_item->created_at)) ?? '' }}
                                                                 </td>
                                                                 <td>{{ $layanan_item->lansia->nama ?? '' }}</td>
-                                                                <td>{{ $layanan_item->berat_badan ?? '' }}</td>
-                                                                <td>{{ $layanan_item->tinggi_badan ?? '' }}</td>
-                                                                <td>{{ $layanan_item->tekanan_darah ?? '' }}</td>
+                                                                <td>{{ $layanan_item->berat_badan . ' KG' ?? '' }}</td>
+                                                                <td>{{ $layanan_item->tinggi_badan . ' CM' ?? '' }}</td>
+                                                                <td>{{ $layanan_item->tekanan_darah . ' mmHg' ?? '' }}</td>
                                                                 <td>{{ $layanan_item->keluhan ?? '' }}</td>
                                                                 <td>{{ $layanan_item->petugas->nama ?? '' }}</td>
                                                                 <td class="text-center">
@@ -293,7 +293,7 @@
                                                             <th>Tekanan Darah</th>
                                                             <th>Keluhan</th>
                                                             <th>Petugas</th>
-                                                            <th style="text-align:center; width:150px;">Aksi</th>
+                                                            <th style="text-align:center; width:150px;">Aksi Admin</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
@@ -353,9 +353,9 @@
                                                                 <td>{{ date('d/m/Y', strtotime($layananPetugas_item->created_at)) ?? '' }}
                                                                 </td>
                                                                 <td>{{ $layananPetugas_item->lansia->nama ?? '' }}</td>
-                                                                <td>{{ $layananPetugas_item->berat_badan ?? '' }}</td>
-                                                                <td>{{ $layananPetugas_item->tinggi_badan ?? '' }}</td>
-                                                                <td>{{ $layananPetugas_item->tekanan_darah ?? '' }}</td>
+                                                                <td>{{ $layananPetugas_item->berat_badan . ' KG' ?? '' }}</td>
+                                                                <td>{{ $layananPetugas_item->tinggi_badan . ' CM' ?? '' }}</td>
+                                                                <td>{{ $layananPetugas_item->tekanan_darah . ' mmHg' ?? '' }}</td>
                                                                 <td>{{ $layananPetugas_item->keluhan ?? '' }}</td>
                                                                 <td>{{ $layananPetugas_item->petugas->nama ?? '' }}</td>
                                                                 <td class="text-center">
@@ -415,7 +415,7 @@
                                                             <th>Tekanan Darah</th>
                                                             <th>Keluhan</th>
                                                             <th>Petugas</th>
-                                                            <th style="text-align:center; width:150px;">Aksi</th>
+                                                            <th style="text-align:center; width:150px;">Aksi Petugas</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
@@ -461,16 +461,16 @@
                                                             <th>Tekanan Darah</th>
                                                             <th>Keluhan</th>
                                                             <th>Petugas</th>
-                                                            <th style="text-align:center; width:150px;">Aksi</th>
+                                                            <th style="text-align:center; width:150px;">Aksi Lansia</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @forelse($layananLansia as $key => $layananLansia_item)
                                                             <tr data-entry-id="{{ $layananLansia_item->id }}">
                                                                 <td>{{ $layananLansia_item->lansia->nama ?? '' }}</td>
-                                                                <td>{{ $layananLansia_item->berat_badan ?? '' }}</td>
-                                                                <td>{{ $layananLansia_item->tinggi_badan ?? '' }}</td>
-                                                                <td>{{ $layananLansia_item->tekanan_darah ?? '' }}</td>
+                                                                <td>{{ $layananLansia_item->berat_badan . ' KG' ?? '' }}</td>
+                                                                <td>{{ $layananLansia_item->tinggi_badan . ' CM' ?? '' }}</td>
+                                                                <td>{{ $layananLansia_item->tekanan_darah . ' mmHg' ?? '' }}</td>
                                                                 <td>{{ $layananLansia_item->keluhan ?? '' }}</td>
                                                                 <td>{{ $layananLansia_item->petugas->nama ?? '' }}</td>
                                                                 <td class="text-center">
@@ -544,7 +544,7 @@
                                                             <th>Tekanan Darah</th>
                                                             <th>Keluhan</th>
                                                             <th>Petugas</th>
-                                                            <th style="text-align:center; width:150px;">Aksi</th>
+                                                            <th style="text-align:center; width:150px;">Aksi Lansia</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
