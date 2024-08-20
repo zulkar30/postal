@@ -524,22 +524,22 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @forelse($layananLansia as $key => $layananLansia_item)
-                                                            <tr data-entry-id="{{ $layananLansia_item->id }}">
-                                                                <td>{{ date('d/m/Y', strtotime($layananLansia_item->created_at)) ?? '' }}
+                                                        @forelse($layanan as $key => $layanan_item)
+                                                            <tr data-entry-id="{{ $layanan_item->id }}">
+                                                                <td>{{ date('d/m/Y', strtotime($layanan_item->created_at)) ?? '' }}
                                                                 </td>
-                                                                <td>{{ $layananLansia_item->lansia->nama ?? '' }}</td>
-                                                                <td>{{ $layananLansia_item->berat_badan . ' KG' ?? '' }}</td>
-                                                                <td>{{ $layananLansia_item->tinggi_badan . ' CM' ?? '' }}</td>
-                                                                <td>{{ $layananLansia_item->tekanan_darah . ' mmHg' ?? '' }}
+                                                                <td>{{ $layanan_item->lansia->nama ?? '' }}</td>
+                                                                <td>{{ $layanan_item->berat_badan . ' KG' ?? '' }}</td>
+                                                                <td>{{ $layanan_item->tinggi_badan . ' CM' ?? '' }}</td>
+                                                                <td>{{ $layanan_item->tekanan_darah . ' mmHg' ?? '' }}
                                                                 </td>
-                                                                <td>{{ $layananLansia_item->keluhan ?? '' }}</td>
-                                                                <td>{{ $layananLansia_item->petugas->nama ?? $layananLansia_item->user->name }}
+                                                                <td>{{ $layanan_item->keluhan ?? '' }}</td>
+                                                                <td>{{ $layanan_item->petugas->nama ?? $layanan_item->user->name }}
                                                                 </td>
                                                                 <td class="text-center">
                                                                     @can('layanan_show')
                                                                         <a href="#"
-                                                                            onclick="printLayanan({{ $layananLansia_item->id }})"
+                                                                            onclick="printLayanan({{ $layanan_item->id }})"
                                                                             title="Print" class="badge badge-warning"><svg
                                                                                 xmlns="http://www.w3.org/2000/svg" width="20"
                                                                                 height="20" viewBox="0 0 24 24"

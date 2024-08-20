@@ -41,7 +41,7 @@
             </div>
 
             {{-- add card --}}
-            @can('petugas_create')
+            @can('lay_kader')
                 <div class="content-body">
                     <section id="add-home">
                         <div class="row">

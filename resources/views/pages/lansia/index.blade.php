@@ -41,7 +41,7 @@
             </div>
 
             {{-- add card --}}
-            @can('lansia_create')
+            @can('lay_kader')
                 <div class="content-body">
                     <section id="add-home">
                         <div class="row">
@@ -391,6 +391,7 @@
                     </section>
                 </div>
             @endcan
+
             @can('lay_dokter')
                 <div class="content-body">
                     <section id="table-home">
