@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 {{-- set title --}}
-@section('title', 'Edit - Petugas')
+@section('title', 'Edit - Dokter')
 
 @section('content')
     <!-- BEGIN: Content-->
@@ -27,12 +27,12 @@
             {{-- breadcumb --}}
             <div class="content-header row">
                 <div class="content-header-left col-md-6 col-12 mb-2 breadcrumb-new">
-                    <h3 class="content-header-title mb-0 d-inline-block">Edit Petugas</h3>
+                    <h3 class="content-header-title mb-0 d-inline-block">Edit Dokter</h3>
                     <div class="row breadcrumbs-top d-inline-block">
                         <div class="breadcrumb-wrapper col-12">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">Dashboard</li>
-                                <li class="breadcrumb-item">Petugas</li>
+                                <li class="breadcrumb-item">Dokter</li>
                                 <li class="breadcrumb-item active">Edit</li>
                             </ol>
                         </div>
@@ -73,7 +73,7 @@
 
                                             <div class="form-body">
 
-                                                <h4 class="form-section"><i class="fa fa-edit"></i> Form Petugas</h4>
+                                                <h4 class="form-section"><i class="fa fa-edit"></i> Form Dokter</h4>
 
                                                 <div class="form-group row">
                                                     <label class="col-md-3 label-control" for="nama">Nama <code
@@ -87,6 +87,22 @@
                                                         @if ($errors->has('nama'))
                                                             <p style="font-style: bold; color: red;">
                                                                 {{ $errors->first('nama') }}</p>
+                                                        @endif
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group row">
+                                                    <label class="col-md-3 label-control" for="email">Email <code
+                                                            style="color:red;">required</code></label>
+                                                    <div class="col-md-9 mx-auto">
+                                                        <input type="text" id="email" name="email"
+                                                            class="form-control" placeholder="Email Valid"
+                                                            value="{{ old('email', isset($petugas) ? $petugas->user->email : '') }}" autocomplete="off"
+                                                            data-inputmask="'alias': 'email'" required>
+
+                                                        @if ($errors->has('email'))
+                                                            <p style="font-style: bold; color: red;">
+                                                                {{ $errors->first('email') }}</p>
                                                         @endif
                                                     </div>
                                                 </div>

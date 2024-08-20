@@ -98,7 +98,7 @@ class PetugasController extends Controller
         $user->role()->sync([2]);
 
         // Sweetalert
-        alert()->success('Berhasil', 'Berhasil Menambahkan Data Petugas Baru');
+        alert()->success('Berhasil', 'Berhasil Menambahkan Data Dokter Baru');
         // Tempat akan ditampilkannya Sweetalert
         return redirect()->route('petugas.index');
     }
@@ -172,7 +172,9 @@ class PetugasController extends Controller
 
         // Buat array data untuk tabel 'users'
         $userData = [
-            'name' => $data['nama'] ?? $petugas->user->nama ?? null,
+            'name' => $data['nama'] ?? $petugas->user->name ?? null,
+            'email' => $data['email'] ?? $petugas->user->email ?? null,
+            'password' => Hash::make($data['email']) ?? $petugas->user->password ?? null,
             'foto' => $data['foto'] ?? $petugas->user->foto ?? null,
         ];
 
@@ -182,7 +184,7 @@ class PetugasController extends Controller
             $petugas->user->update($userData);
         }
 
-        alert()->success('Berhasil', 'Berhasil Memperbarui Data Petugas');
+        alert()->success('Berhasil', 'Berhasil Memperbarui Data Dokter');
         return redirect()->route('petugas.index');
     }
 
@@ -214,7 +216,7 @@ class PetugasController extends Controller
 
         $petugas->delete();
 
-        alert()->success('Berhasil', 'Berhasil Menghapus Data Petugas');
+        alert()->success('Berhasil', 'Berhasil Menghapus Data Dokter');
         return back();
     }
 }

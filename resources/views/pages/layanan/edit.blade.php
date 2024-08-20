@@ -162,14 +162,25 @@
                                                 </div>
 
                                                 <div class="form-group row">
-                                                    <label class="col-md-3 label-control">Nama Petugas</label>
-                                                    <div class="col-md-9 mx-auto">
-                                                        <input name="petugas_id" id="petugas_id" type="hidden"
-                                                            value="{{ isset($layanan) ? $layanan->petugas_id : $loggedInUser->petugas->id ?? '' }}">
-                                                        <input type="text" class="form-control"
-                                                            value="{{ isset($layanan) ? $layanan->petugas->nama : $loggedInUser->petugas->nama ?? '' }}"
-                                                            readonly>
-                                                    </div>
+                                                    @if (isset($loggedInUser->petugas_id))
+                                                        <label class="col-md-3 label-control">Nama Dokter</label>
+                                                        <div class="col-md-9 mx-auto">
+                                                            <input name="petugas_id" id="petugas_id" type="hidden"
+                                                                value="{{ isset($layanan) ? $layanan->petugas_id : $loggedInUser->petugas->id ?? '' }}">
+                                                            <input type="text" class="form-control"
+                                                                value="{{ isset($layanan) ? $layanan->petugas->nama : $loggedInUser->petugas->nama ?? '' }}"
+                                                                readonly>
+                                                        </div>
+                                                    @else
+                                                        <label class="col-md-3 label-control">Nama Kader</label>
+                                                        <div class="col-md-9 mx-auto">
+                                                            <input name="user_id" id="user_id" type="hidden"
+                                                                value="{{ isset($layanan) ? $layanan->user_id : $loggedInUser->id ?? '' }}">
+                                                            <input type="text" class="form-control"
+                                                                value="{{ isset($layanan) ? $layanan->user->name : $loggedInUser->name ?? '' }}"
+                                                                readonly>
+                                                        </div>
+                                                    @endif
                                                 </div>
 
                                             </div>

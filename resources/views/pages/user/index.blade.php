@@ -75,15 +75,16 @@
                                                             anda menekan tombol submit.</p>
                                                     </div>
 
-                                                    <div class="form-group row {{ $errors->has('akun') ? 'has-error' : '' }}">
+                                                    {{-- <div class="form-group row {{ $errors->has('akun') ? 'has-error' : '' }}">
                                                         <label class="col-md-3 label-control">Akun <code
                                                                 style="color:red;">required</code></label>
                                                         <div class="col-md-9 mx-auto">
                                                             <select name="akun" id="akun" class="form-control select2"
                                                                 required onchange="toggleInputFields()">
                                                                 <option value="" disabled selected>Pilih Akun</option>
-                                                                <option value="1">Petugas</option>
-                                                                <option value="2">Lansia</option>
+                                                                <option value="1">Kader</option>
+                                                                <option value="2">Dokter</option>
+                                                                <option value="3">Lansia</option>
                                                             </select>
 
                                                             @if ($errors->has('akun'))
@@ -93,7 +94,7 @@
                                                         </div>
                                                     </div>
 
-                                                    <div id="petugas-form"
+                                                    <div id="dokter-form"
                                                         class="form-group row {{ $errors->has('petugas_id') ? 'has-error' : '' }}"
                                                         style="display: none;">
                                                         <label class="col-md-3 label-control">Petugas <code
@@ -135,7 +136,7 @@
                                                                     {{ $errors->first('lansia_id') }}</p>
                                                             @endif
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
 
                                                     <div class="form-group row">
                                                         <label class="col-md-3 label-control" for="name">Nama <code
@@ -479,22 +480,22 @@
             }
         }
 
-        function toggleInputFields() {
-            var akun = document.getElementById('akun').value;
-            var petugasForm = document.getElementById('petugas-form');
-            var lansiaForm = document.getElementById('lansia-form');
+        // function toggleInputFields() {
+        //     var akun = document.getElementById('akun').value;
+        //     var dokterForm = document.getElementById('dokter-form');
+        //     var lansiaForm = document.getElementById('lansia-form');
 
-            if (akun == "1") {
-                petugasForm.style.display = 'flex';
-                lansiaForm.style.display = 'none';
-            } else if (akun == "2") {
-                petugasForm.style.display = 'none';
-                lansiaForm.style.display = 'flex';
-            } else {
-                petugasForm.style.display = 'none';
-                lansiaForm.style.display = 'none';
-            }
-        }
+        //     if (akun == "1") {
+        //         dokterForm.style.display = 'flex';
+        //         lansiaForm.style.display = 'none';
+        //     } else if (akun == "2") {
+        //         dokterForm.style.display = 'none';
+        //         lansiaForm.style.display = 'flex';
+        //     } else {
+        //         dokterForm.style.display = 'none';
+        //         lansiaForm.style.display = 'none';
+        //     }
+        // }
     </script>
 
     <div class="modal fade" id="mymodal" tabindex="-1" role="dialog">

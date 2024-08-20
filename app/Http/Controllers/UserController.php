@@ -30,7 +30,7 @@ class UserController extends Controller
         // Middleware Gate
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        $user = User::orderBy('id', 'asc')->get();
+        $user = User::where('id', '!=', 1)->orderBy('id', 'asc')->get();
         $roles = Role::all()->pluck('name', 'id');
         $petugas = Petugas::orderBy('created_at', 'desc')->get();
         $lansia = Lansia::orderBy('created_at', 'desc')->get();

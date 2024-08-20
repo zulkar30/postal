@@ -115,8 +115,14 @@
             <p>{{ ': ' . $layanan->keluhan }}</p>
         </div>
         <div class="field">
-            <strong>Petugas Pemeriksaan</strong>
-            <p>{{ ': ' . $layanan->petugas->nama }}</p>
+            <strong>Pemeriksa</strong>
+            <p>
+                @if ($layanan->petugas_id)
+                    {{ ': ' . 'Dokter ' . $layanan->petugas->nama }}
+                @else
+                    {{ ': ' . 'Kader '. $layanan->user->name }}
+                @endif
+            </p>
         </div>
     </div>
 </body>

@@ -39,7 +39,7 @@
 
             <div class="content-body">
 
-                @can('super_admin_dashboard')
+                @can('lay_kader')
                     <h3 class="content-header-title mb-1 d-inline-block">Manajemen Akses</h3>
                     <div class="row d-flex">
                         {{-- User --}}
@@ -138,41 +138,11 @@
                     </div>
                 @endcan
 
-                @can('super_admin_dashboard')
-                    <h3 class="content-header-title mb-1 d-inline-block">Operasional</h3>
+                @can('lay_kader')
+                    <h3 class="content-header-title mb-1 d-inline-block">Operasional Kader</h3>
                     <div class="row d-flex">
-                        {{-- Lansia --}}
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <a href="{{ route('lansia.index') }}">
-                                <div class="card border-left-danger shadow py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                    Lansia</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                    {{ $lansias . ' Lansia' }}
-                                                </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72"
-                                                    viewBox="0 0 24 24"
-                                                    style="fill: rgba(201, 198, 198, 1);transform: ;msFilter:;">
-                                                    <path
-                                                        d="M12 2A10.13 10.13 0 0 0 2 12a10 10 0 0 0 4 7.92V20h.1a9.7 9.7 0 0 0 11.8 0h.1v-.08A10 10 0 0 0 22 12 10.13 10.13 0 0 0 12 2zM8.07 18.93A3 3 0 0 1 11 16.57h2a3 3 0 0 1 2.93 2.36 7.75 7.75 0 0 1-7.86 0zm9.54-1.29A5 5 0 0 0 13 14.57h-2a5 5 0 0 0-4.61 3.07A8 8 0 0 1 4 12a8.1 8.1 0 0 1 8-8 8.1 8.1 0 0 1 8 8 8 8 0 0 1-2.39 5.64z">
-                                                    </path>
-                                                    <path
-                                                        d="M12 6a3.91 3.91 0 0 0-4 4 3.91 3.91 0 0 0 4 4 3.91 3.91 0 0 0 4-4 3.91 3.91 0 0 0-4-4zm0 6a1.91 1.91 0 0 1-2-2 1.91 1.91 0 0 1 2-2 1.91 1.91 0 0 1 2 2 1.91 1.91 0 0 1-2 2z">
-                                                    </path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
 
-                        {{-- Petugas --}}
+                        {{-- Dokter --}}
                         <div class="col-xl-3 col-md-6 mb-4">
                             <a href="{{ route('petugas.index') }}">
                                 <div class="card border-left-danger shadow py-2">
@@ -180,9 +150,9 @@
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                    Petugas</div>
+                                                    Dokter</div>
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                    {{ $petugases . ' Petugas' }}
+                                                    {{ $petugases . ' Dokter' }}
                                                 </div>
                                             </div>
                                             <div class="col-auto">
@@ -233,6 +203,38 @@
                                 </div>
                             </a>
                         </div>
+
+                        {{-- Lansia --}}
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <a href="{{ route('lansia.index') }}">
+                                <div class="card border-left-danger shadow py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                    Lansia</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                    {{ $lansias . ' Lansia' }}
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72"
+                                                    viewBox="0 0 24 24"
+                                                    style="fill: rgba(201, 198, 198, 1);transform: ;msFilter:;">
+                                                    <path
+                                                        d="M12 2A10.13 10.13 0 0 0 2 12a10 10 0 0 0 4 7.92V20h.1a9.7 9.7 0 0 0 11.8 0h.1v-.08A10 10 0 0 0 22 12 10.13 10.13 0 0 0 12 2zM8.07 18.93A3 3 0 0 1 11 16.57h2a3 3 0 0 1 2.93 2.36 7.75 7.75 0 0 1-7.86 0zm9.54-1.29A5 5 0 0 0 13 14.57h-2a5 5 0 0 0-4.61 3.07A8 8 0 0 1 4 12a8.1 8.1 0 0 1 8-8 8.1 8.1 0 0 1 8 8 8 8 0 0 1-2.39 5.64z">
+                                                    </path>
+                                                    <path
+                                                        d="M12 6a3.91 3.91 0 0 0-4 4 3.91 3.91 0 0 0 4 4 3.91 3.91 0 0 0 4-4 3.91 3.91 0 0 0-4-4zm0 6a1.91 1.91 0 0 1-2-2 1.91 1.91 0 0 1 2-2 1.91 1.91 0 0 1 2 2 1.91 1.91 0 0 1-2 2z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
                         {{-- Layanan --}}
                         <div class="col-xl-3 col-md-6 mb-4">
                             <a href="{{ route('layanan.index') }}">
@@ -266,41 +268,11 @@
                     </div>
                 @endcan
 
-                @can('petugas_dashboard')
-                    <h3 class="content-header-title mb-1 d-inline-block">Operasional</h3>
+                @can('lay_dokter')
+                    <h3 class="content-header-title mb-1 d-inline-block">Operasional Dokter</h3>
                     <div class="row d-flex">
-                        {{-- Lansia --}}
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <a href="{{ route('lansia.index') }}">
-                                <div class="card border-left-danger shadow py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                    Lansia</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                    {{ $lansias . ' Lansia' }}
-                                                </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72"
-                                                    viewBox="0 0 24 24"
-                                                    style="fill: rgba(201, 198, 198, 1);transform: ;msFilter:;">
-                                                    <path
-                                                        d="M12 2A10.13 10.13 0 0 0 2 12a10 10 0 0 0 4 7.92V20h.1a9.7 9.7 0 0 0 11.8 0h.1v-.08A10 10 0 0 0 22 12 10.13 10.13 0 0 0 12 2zM8.07 18.93A3 3 0 0 1 11 16.57h2a3 3 0 0 1 2.93 2.36 7.75 7.75 0 0 1-7.86 0zm9.54-1.29A5 5 0 0 0 13 14.57h-2a5 5 0 0 0-4.61 3.07A8 8 0 0 1 4 12a8.1 8.1 0 0 1 8-8 8.1 8.1 0 0 1 8 8 8 8 0 0 1-2.39 5.64z">
-                                                    </path>
-                                                    <path
-                                                        d="M12 6a3.91 3.91 0 0 0-4 4 3.91 3.91 0 0 0 4 4 3.91 3.91 0 0 0 4-4 3.91 3.91 0 0 0-4-4zm0 6a1.91 1.91 0 0 1-2-2 1.91 1.91 0 0 1 2-2 1.91 1.91 0 0 1 2 2 1.91 1.91 0 0 1-2 2z">
-                                                    </path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
 
-                        {{-- Petugas --}}
+                        {{-- Dokter --}}
                         <div class="col-xl-3 col-md-6 mb-4">
                             <a href="{{ route('petugas.index') }}">
                                 <div class="card border-left-danger shadow py-2">
@@ -308,9 +280,9 @@
                                         <div class="row no-gutters align-items-center">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                    Petugas</div>
+                                                    Dokter</div>
                                                 <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                                    {{ $petugases . ' Petugas' }}
+                                                    {{ $petugases . ' Dokter' }}
                                                 </div>
                                             </div>
                                             <div class="col-auto">
@@ -361,6 +333,38 @@
                                 </div>
                             </a>
                         </div>
+
+                        {{-- Lansia --}}
+                        <div class="col-xl-3 col-md-6 mb-4">
+                            <a href="{{ route('lansia.index') }}">
+                                <div class="card border-left-danger shadow py-2">
+                                    <div class="card-body">
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                    Lansia</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                    {{ $lansias . ' Lansia' }}
+                                                </div>
+                                            </div>
+                                            <div class="col-auto">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72"
+                                                    viewBox="0 0 24 24"
+                                                    style="fill: rgba(201, 198, 198, 1);transform: ;msFilter:;">
+                                                    <path
+                                                        d="M12 2A10.13 10.13 0 0 0 2 12a10 10 0 0 0 4 7.92V20h.1a9.7 9.7 0 0 0 11.8 0h.1v-.08A10 10 0 0 0 22 12 10.13 10.13 0 0 0 12 2zM8.07 18.93A3 3 0 0 1 11 16.57h2a3 3 0 0 1 2.93 2.36 7.75 7.75 0 0 1-7.86 0zm9.54-1.29A5 5 0 0 0 13 14.57h-2a5 5 0 0 0-4.61 3.07A8 8 0 0 1 4 12a8.1 8.1 0 0 1 8-8 8.1 8.1 0 0 1 8 8 8 8 0 0 1-2.39 5.64z">
+                                                    </path>
+                                                    <path
+                                                        d="M12 6a3.91 3.91 0 0 0-4 4 3.91 3.91 0 0 0 4 4 3.91 3.91 0 0 0 4-4 3.91 3.91 0 0 0-4-4zm0 6a1.91 1.91 0 0 1-2-2 1.91 1.91 0 0 1 2-2 1.91 1.91 0 0 1 2 2 1.91 1.91 0 0 1-2 2z">
+                                                    </path>
+                                                </svg>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
                         {{-- Layanan --}}
                         <div class="col-xl-3 col-md-6 mb-4">
                             <a href="{{ route('layanan.index') }}">
@@ -394,9 +398,10 @@
                     </div>
                 @endcan
 
-                @can('lansia_dashboard')
-                    <h3 class="content-header-title mb-1 d-inline-block">Operasional</h3>
+                @can('lay_lansia')
+                    <h3 class="content-header-title mb-1 d-inline-block">Operasional Lansia</h3>
                     <div class="row d-flex">
+
                         {{-- Jadwal --}}
                         <div class="col-xl-3 col-md-6 mb-4">
                             <a href="{{ route('jadwal.index') }}">
@@ -427,6 +432,7 @@
                                 </div>
                             </a>
                         </div>
+
                         {{-- Layanan --}}
                         <div class="col-xl-3 col-md-6 mb-4">
                             <a href="{{ route('layanan.index') }}">
@@ -457,40 +463,10 @@
                                 </div>
                             </a>
                         </div>
-                        {{-- Telegram --}}
-                        <div class="col-xl-3 col-md-6 mb-4">
-                            <a href="{{ route('telegram') }}">
-                                <div class="card border-left-danger shadow py-2">
-                                    <div class="card-body">
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col mr-2">
-                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
-                                                    Telegram</div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="72" height="72"
-                                                    viewBox="0 0 24 24"
-                                                    style="fill: rgba(201, 198, 198, 1);transform: ;msFilter:;">
-                                                    <path
-                                                        d="M12 2A10.13 10.13 0 0 0 2 12a10 10 0 0 0 4 7.92V20h.1a9.7 9.7 0 0 0 11.8 0h.1v-.08A10 10 0 0 0 22 12 10.13 10.13 0 0 0 12 2zM8.07 18.93A3 3 0 0 1 11 16.57h2a3 3 0 0 1 2.93 2.36 7.75 7.75 0 0 1-7.86 0zm9.54-1.29A5 5 0 0 0 13 14.57h-2a5 5 0 0 0-4.61 3.07A8 8 0 0 1 4 12a8.1 8.1 0 0 1 8-8 8.1 8.1 0 0 1 8 8 8 8 0 0 1-2.39 5.64z">
-                                                    </path>
-                                                    <path
-                                                        d="M12 6a3.91 3.91 0 0 0-4 4 3.91 3.91 0 0 0 4 4 3.91 3.91 0 0 0 4-4 3.91 3.91 0 0 0-4-4zm0 6a1.91 1.91 0 0 1-2-2 1.91 1.91 0 0 1 2-2 1.91 1.91 0 0 1 2 2 1.91 1.91 0 0 1-2 2z">
-                                                    </path>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
                     </div>
                 @endcan
 
-
-
             </div>
-
         </div>
     </div>
     <!-- END: Content-->

@@ -83,4 +83,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Models\Petugas', 'petugas_id', 'id');
     }
+
+    // Relasi one to many
+    public function layanan()
+    {
+        return $this->hasMany('App\Models\Layanan', 'user_id');
+    }
 }

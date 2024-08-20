@@ -17,7 +17,7 @@ class LansiaSeeder extends Seeder
     {
         $lansia = [
             [
-                'nama'           => 'Sapik',
+                'nama'           => 'Lansia Tua',
                 'nik'            => '140304043005562',
                 'jenis_kelamin'  => 'laki-laki',
                 'no_hp'          => '082286391023',

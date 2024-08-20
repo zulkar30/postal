@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 {{-- set title --}}
-@section('title', 'Petugas')
+@section('title', 'Dokter')
 
 @section('content')
 
@@ -28,12 +28,12 @@
             {{-- breadcumb --}}
             <div class="content-header row">
                 <div class="content-header-left col-md-6 col-12 mb-2 breadcrumb-new">
-                    <h3 class="content-header-title mb-0 d-inline-block">Petugas</h3>
+                    <h3 class="content-header-title mb-0 d-inline-block">Dokter</h3>
                     <div class="row breadcrumbs-top d-inline-block">
                         <div class="breadcrumb-wrapper col-12">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item">Dashboard</li>
-                                <li class="breadcrumb-item active">Petugas</li>
+                                <li class="breadcrumb-item active">Dokter</li>
                             </ol>
                         </div>
                     </div>
@@ -235,7 +235,7 @@
             @endcan
 
             {{-- table card --}}
-            @can('petugas_table')
+            @can('lay_kader')
                 <div class="content-body">
                     <section id="table-home">
                         <!-- Zero configuration table -->
@@ -243,7 +243,7 @@
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4 class="card-title">Petugas List</h4>
+                                        <h4 class="card-title">Dokter List</h4>
                                         <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                         <div class="heading-elements">
                                             <ul class="list-inline mb-0">
@@ -264,9 +264,12 @@
                                                             <th>Tanggal</th>
                                                             <th>Nama</th>
                                                             <th>NIP</th>
+                                                            <th>Jenis Kelamin</th>
                                                             <th>Telepon</th>
+                                                            <th>Tempat Lahir</th>
+                                                            <th>Tanggal Lahir</th>
                                                             <th>Foto</th>
-                                                            <th style="text-align:center;">Tombol Aksi</th>
+                                                            <th style="text-align:center;">Aksi Dokter</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -276,16 +279,28 @@
                                                                 </td>
                                                                 <td>{{ $petugas_item->nama ?? '' }}</td>
                                                                 <td>{{ $petugas_item->nip ?? '' }}</td>
+                                                                <td>
+                                                                    @if ($petugas_item->jenis_kelamin == 'laki-laki')
+                                                                        <span>{{ 'Laki-laki' }}</span>
+                                                                    @elseif($petugas_item->jenis_kelamin == 'perempuan')
+                                                                        <span>{{ 'Perempuan' }}</span>
+                                                                    @else
+                                                                        <span>{{ 'N/A' }}</span>
+                                                                    @endif
+                                                                </td>
                                                                 <td>{{ $petugas_item->no_hp ?? '' }}</td>
+                                                                <td>{{ $petugas_item->tempat_lahir ?? '' }}</td>
+                                                                <td>{{ date('d/m/Y', strtotime($petugas_item->tanggal_lahir)) ?? '' }}
+                                                                </td>
                                                                 <td><a data-fancybox="gallery"
                                                                         data-src="{{ request()->getSchemeAndHttpHost() . '/storage/assets/file-petugas/' . $petugas_item->foto }}"
                                                                         class="blue accent-4">Lihat</a></td>
                                                                 <td class="text-center">
-                                                                    @can('petugas_show')
+                                                                    {{-- @can('petugas_show')
                                                                         <a href="#mymodal"
                                                                             data-remote="{{ route('petugas.show', $petugas_item->id) }}"
                                                                             data-toggle="modal" data-target="#mymodal"
-                                                                            data-title="Petugas Detail" class="badge badge-info"
+                                                                            data-title="Dokter Detail" class="badge badge-info"
                                                                             data-tooltip="Tooltip on top" title="Lihat"><svg
                                                                                 xmlns="http://www.w3.org/2000/svg" width="20"
                                                                                 height="20" viewBox="0 0 24 24"
@@ -297,7 +312,7 @@
                                                                                     d="M12 5c-7.633 0-9.927 6.617-9.948 6.684L1.946 12l.105.316C2.073 12.383 4.367 19 12 19s9.927-6.617 9.948-6.684l.106-.316-.105-.316C21.927 11.617 19.633 5 12 5zm0 12c-5.351 0-7.424-3.846-7.926-5C4.578 10.842 6.652 7 12 7c5.351 0 7.424 3.846 7.926 5-.504 1.158-2.578 5-7.926 5z">
                                                                                 </path>
                                                                             </svg></a>
-                                                                    @endcan
+                                                                    @endcan --}}
                                                                     @can('petugas_edit')
                                                                         <a href="{{ route('petugas.edit', $petugas_item->id) }}"
                                                                             class="badge badge-warning"
@@ -334,9 +349,100 @@
                                                             <th>Tanggal</th>
                                                             <th>Nama</th>
                                                             <th>NIP</th>
+                                                            <th>Jenis Kelamin</th>
                                                             <th>Telepon</th>
+                                                            <th>Tempat Lahir</th>
+                                                            <th>Tanggal Lahir</th>
                                                             <th>Foto</th>
-                                                            <th style="text-align:center; width:150px;">Tombol Aksi</th>
+                                                            <th style="text-align:center; width:150px;">Aksi Dokter</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            @endcan
+
+            @can('lay_dokter')
+                <div class="content-body">
+                    <section id="table-home">
+                        <!-- Zero configuration table -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Dokter List</h4>
+                                        <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                                        <div class="heading-elements">
+                                            <ul class="list-inline mb-0">
+                                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                                <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-content collapse show">
+                                        <div class="card-body card-dashboard">
+
+                                            <div class="table-responsive">
+                                                <table
+                                                    class="table table-striped table-bordered text-inputs-searching default-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Tanggal</th>
+                                                            <th>Nama</th>
+                                                            <th>NIP</th>
+                                                            <th>Jenis Kelamin</th>
+                                                            <th>Telepon</th>
+                                                            <th>Tempat Lahir</th>
+                                                            <th>Tanggal Lahir</th>
+                                                            <th>Foto</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @forelse($petugas as $key => $petugas_item)
+                                                            <tr data-entry-id="{{ $petugas_item->id }}">
+                                                                <td>{{ date('d/m/Y', strtotime($petugas_item->created_at)) ?? '' }}
+                                                                </td>
+                                                                <td>{{ $petugas_item->nama ?? '' }}</td>
+                                                                <td>{{ $petugas_item->nip ?? '' }}</td>
+                                                                <td>
+                                                                    @if ($petugas_item->jenis_kelamin == 'laki-laki')
+                                                                        <span>{{ 'Laki-laki' }}</span>
+                                                                    @elseif($petugas_item->jenis_kelamin == 'perempuan')
+                                                                        <span>{{ 'Perempuan' }}</span>
+                                                                    @else
+                                                                        <span>{{ 'N/A' }}</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>{{ $petugas_item->no_hp ?? '' }}</td>
+                                                                <td>{{ $petugas_item->tempat_lahir ?? '' }}</td>
+                                                                <td>{{ date('d/m/Y', strtotime($petugas_item->tanggal_lahir)) ?? '' }}
+                                                                </td>
+                                                                <td><a data-fancybox="gallery"
+                                                                        data-src="{{ request()->getSchemeAndHttpHost() . '/storage/assets/file-petugas/' . $petugas_item->foto }}"
+                                                                        class="blue accent-4">Lihat</a></td>
+                                                            </tr>
+                                                        @empty
+                                                            {{-- not found --}}
+                                                        @endforelse
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th>Tanggal</th>
+                                                            <th>Nama</th>
+                                                            <th>NIP</th>
+                                                            <th>Jenis Kelamin</th>
+                                                            <th>Telepon</th>
+                                                            <th>Tempat Lahir</th>
+                                                            <th>Tanggal Lahir</th>
+                                                            <th>Foto</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>

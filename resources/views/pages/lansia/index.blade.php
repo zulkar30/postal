@@ -107,11 +107,12 @@
                                                     </div>
 
                                                     <div class="form-group row">
-                                                        <label class="col-md-3 label-control" for="telegram_username">Telegram Username <code
-                                                                style="color:red;">required</code></label>
+                                                        <label class="col-md-3 label-control" for="telegram_username">Telegram
+                                                            Username <code style="color:red;">required</code></label>
                                                         <div class="col-md-9 mx-auto">
-                                                            <input type="text" id="telegram_username" name="telegram_username"
-                                                                class="form-control" placeholder="Telegram Username"
+                                                            <input type="text" id="telegram_username"
+                                                                name="telegram_username" class="form-control"
+                                                                placeholder="Telegram Username"
                                                                 value="{{ old('telegram_username') }}" required>
 
                                                             @if ($errors->has('telegram_username'))
@@ -251,7 +252,7 @@
             @endcan
 
             {{-- table card --}}
-            @can('lansia_table')
+            @can('lay_kader')
                 <div class="content-body">
                     <section id="table-home">
                         <!-- Zero configuration table -->
@@ -280,9 +281,14 @@
                                                             <th>Tanggal</th>
                                                             <th>Nama</th>
                                                             <th>NIK</th>
+                                                            <th>Jenis Kelamin</th>
                                                             <th>Telepon</th>
+                                                            <th>Tempat Lahir</th>
+                                                            <th>Tanggal Lahir</th>
+                                                            <th>Telegram</th>
+                                                            <th>Email</th>
                                                             <th>Foto</th>
-                                                            <th style="text-align:center; width:150px;">Aksi</th>
+                                                            <th>Aksi Lansia</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -292,12 +298,26 @@
                                                                 </td>
                                                                 <td>{{ $lansia_item->nama ?? '' }}</td>
                                                                 <td>{{ $lansia_item->nik ?? '' }}</td>
+                                                                <td>
+                                                                    @if ($lansia_item->jenis_kelamin == 'laki-laki')
+                                                                        <span>{{ 'Laki-laki' }}</span>
+                                                                    @elseif($lansia_item->jenis_kelamin == 'perempuan')
+                                                                        <span>{{ 'Perempuan' }}</span>
+                                                                    @else
+                                                                        <span>{{ 'N/A' }}</span>
+                                                                    @endif
+                                                                </td>
                                                                 <td>{{ $lansia_item->no_hp ?? '' }}</td>
+                                                                <td>{{ $lansia_item->tempat_lahir ?? '' }}</td>
+                                                                <td>{{ date('d/m/Y', strtotime($lansia_item->tanggal_lahir)) ?? '' }}
+                                                                </td>
+                                                                <td>{{ $lansia_item->telegram_username ?? '' }}</td>
+                                                                <td>{{ $lansia_item->user->email ?? '' }}</td>
                                                                 <td><a data-fancybox="gallery"
                                                                         data-src="{{ request()->getSchemeAndHttpHost() . '/storage/assets/file-lansia' . '/' . $lansia_item->foto }}"
                                                                         class="blue accent-4">Lihat</a></td>
                                                                 <td class="text-center">
-                                                                    @can('lansia_show')
+                                                                    {{-- @can('lansia_show')
                                                                         <a href="#mymodal"
                                                                             data-remote="{{ route('lansia.show', $lansia_item->id) }}"
                                                                             data-toggle="modal" data-target="#mymodal"
@@ -313,7 +333,7 @@
                                                                                     d="M12 5c-7.633 0-9.927 6.617-9.948 6.684L1.946 12l.105.316C2.073 12.383 4.367 19 12 19s9.927-6.617 9.948-6.684l.106-.316-.105-.316C21.927 11.617 19.633 5 12 5zm0 12c-5.351 0-7.424-3.846-7.926-5C4.578 10.842 6.652 7 12 7c5.351 0 7.424 3.846 7.926 5-.504 1.158-2.578 5-7.926 5z">
                                                                                 </path>
                                                                             </svg></a>
-                                                                    @endcan
+                                                                    @endcan --}}
                                                                     @can('lansia_edit')
                                                                         <a href="{{ route('lansia.edit', $lansia_item->id) }}"
                                                                             class="badge badge-warning"
@@ -350,9 +370,107 @@
                                                             <th>Tanggal</th>
                                                             <th>Nama</th>
                                                             <th>NIK</th>
+                                                            <th>Jenis Kelamin</th>
                                                             <th>Telepon</th>
+                                                            <th>Tempat Lahir</th>
+                                                            <th>Tanggal Lahir</th>
+                                                            <th>Telegram</th>
+                                                            <th>Email</th>
                                                             <th>Foto</th>
-                                                            <th style="text-align:center; width:150px;">Aksi</th>
+                                                            <th>Aksi Lansia</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            @endcan
+            @can('lay_dokter')
+                <div class="content-body">
+                    <section id="table-home">
+                        <!-- Zero configuration table -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Lansia List</h4>
+                                        <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                                        <div class="heading-elements">
+                                            <ul class="list-inline mb-0">
+                                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                                <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-content collapse show">
+                                        <div class="card-body card-dashboard">
+
+                                            <div class="table-responsive">
+                                                <table
+                                                    class="table table-striped table-bordered text-inputs-searching default-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Tanggal</th>
+                                                            <th>Nama</th>
+                                                            <th>NIK</th>
+                                                            <th>Jenis Kelamin</th>
+                                                            <th>Telepon</th>
+                                                            <th>Tempat Lahir</th>
+                                                            <th>Tanggal Lahir</th>
+                                                            <th>Telegram</th>
+                                                            <th>Email</th>
+                                                            <th>Foto</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @forelse($lansia as $key => $lansia_item)
+                                                            <tr data-entry-id="{{ $lansia_item->id }}">
+                                                                <td>{{ date('d/m/Y', strtotime($lansia_item->created_at)) ?? '' }}
+                                                                </td>
+                                                                <td>{{ $lansia_item->nama ?? '' }}</td>
+                                                                <td>{{ $lansia_item->nik ?? '' }}</td>
+                                                                <td>
+                                                                    @if ($lansia_item->jenis_kelamin == 'laki-laki')
+                                                                        <span>{{ 'Laki-laki' }}</span>
+                                                                    @elseif($lansia_item->jenis_kelamin == 'perempuan')
+                                                                        <span>{{ 'Perempuan' }}</span>
+                                                                    @else
+                                                                        <span>{{ 'N/A' }}</span>
+                                                                    @endif
+                                                                </td>
+                                                                <td>{{ $lansia_item->no_hp ?? '' }}</td>
+                                                                <td>{{ $lansia_item->tempat_lahir ?? '' }}</td>
+                                                                <td>{{ date('d/m/Y', strtotime($lansia_item->tanggal_lahir)) ?? '' }}
+                                                                </td>
+                                                                <td>{{ $lansia_item->telegram_username ?? '' }}</td>
+                                                                <td>{{ $lansia_item->user->email ?? '' }}</td>
+                                                                <td><a data-fancybox="gallery"
+                                                                        data-src="{{ request()->getSchemeAndHttpHost() . '/storage/assets/file-lansia' . '/' . $lansia_item->foto }}"
+                                                                        class="blue accent-4">Lihat</a></td>
+                                                            </tr>
+                                                        @empty
+                                                            {{-- not found --}}
+                                                        @endforelse
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th>Tanggal</th>
+                                                            <th>Nama</th>
+                                                            <th>NIK</th>
+                                                            <th>Jenis Kelamin</th>
+                                                            <th>Telepon</th>
+                                                            <th>Tempat Lahir</th>
+                                                            <th>Tanggal Lahir</th>
+                                                            <th>Telegram</th>
+                                                            <th>Email</th>
+                                                            <th>Foto</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>

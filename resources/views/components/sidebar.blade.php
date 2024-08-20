@@ -10,11 +10,12 @@
                 </a>
             </li>
 
-            @can('app')
+            {{-- @can('app') --}}
                 <li class=" navigation-header"><span data-i18n="Application">Aplikasi</span><i class="la la-ellipsis-h"
                         data-toggle="tooltip" data-placement="right" data-original-title="Application"></i>
                 </li>
-            @endcan
+            {{-- @endcan --}}
+
             @can('management_access')
                 <li class=" nav-item"><a href="#"><i
                             class="{{ request()->is('user') || request()->is('user/*') || request()->is('*/user') || request()->is('*/user/*') ? 'bx bx-group bx-flashing' : 'bx bx-group' }}"></i><span
@@ -68,6 +69,15 @@
                             class="menu-title" data-i18n="Operational">Operasional</span></a>
                     <ul class="menu-content">
 
+                        @can('petugas_access')
+                            <li
+                                class="{{ request()->is('petugas') || request()->is('petugas/*') || request()->is('*/petugas') || request()->is('*/petugas/*') ? 'active' : '' }} ">
+                                <a class="menu-item" href="{{ route('petugas.index') }}">
+                                    <i></i><span>Dokter</span>
+                                </a>
+                            </li>
+                        @endcan
+
                         @can('jadwal_access')
                             <li
                                 class="{{ request()->is('jadwal') || request()->is('jadwal/*') || request()->is('*/jadwal') || request()->is('*/jadwal/*') ? 'active' : '' }} ">
@@ -91,23 +101,6 @@
                                 class="{{ request()->is('layanan') || request()->is('layanan/*') || request()->is('*/layanan') || request()->is('*/layanan/*') ? 'active' : '' }} ">
                                 <a class="menu-item" href="{{ route('layanan.index') }}">
                                     <i></i><span>Layanan</span>
-                                </a>
-                            </li>
-                        @endcan
-
-                        @can('petugas_access')
-                            <li
-                                class="{{ request()->is('petugas') || request()->is('petugas/*') || request()->is('*/petugas') || request()->is('*/petugas/*') ? 'active' : '' }} ">
-                                <a class="menu-item" href="{{ route('petugas.index') }}">
-                                    <i></i><span>Petugas</span>
-                                </a>
-                            </li>
-                        @endcan
-
-                        @can('telegram_access')
-                            <li class="{{ request()->is('telegram') ? 'active' : '' }} ">
-                                <a class="menu-item" href="{{ route('telegram') }}">
-                                    <i></i><span>Telegram</span>
                                 </a>
                             </li>
                         @endcan

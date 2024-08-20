@@ -18,6 +18,7 @@ class Layanan extends Model
 
     // Kolom tabel yang boleh diisi
     protected $fillable = [
+        'user_id',
         'petugas_id',
         'lansia_id',
         'berat_badan',
@@ -31,6 +32,11 @@ class Layanan extends Model
     public function petugas()
     {
         return $this->belongsTo('App\Models\Petugas', 'petugas_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User', 'user_id', 'id');
     }
 
     public function lansia()

@@ -156,13 +156,23 @@
                                                     </div>
 
                                                     <div class="form-group row">
-                                                        <label class="col-md-3 label-control">Nama Petugas</label>
-                                                        <div class="col-md-9 mx-auto">
-                                                            <input name="petugas_id" id="petugas_id" type="hidden"
-                                                                value="{{ $loggedInUser->petugas->id ?? '' }}">
-                                                            <input type="text" class="form-control"
-                                                                value="{{ $loggedInUser->petugas->nama ?? '' }}" readonly>
-                                                        </div>
+                                                        @if (isset($loggedInUser->petugas_id))
+                                                            <label class="col-md-3 label-control">Nama Dokter</label>
+                                                            <div class="col-md-9 mx-auto">
+                                                                <input name="petugas_id" id="petugas_id" type="hidden"
+                                                                    value="{{ $loggedInUser->petugas->id }}">
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ $loggedInUser->petugas->nama }}" readonly>
+                                                            </div>
+                                                        @else
+                                                            <label class="col-md-3 label-control">Nama Kader</label>
+                                                            <div class="col-md-9 mx-auto">
+                                                                <input name="user_id" id="user_id" type="hidden"
+                                                                    value="{{ $loggedInUser->id }}">
+                                                                <input type="text" class="form-control"
+                                                                    value="{{ $loggedInUser->name }}" readonly>
+                                                            </div>
+                                                        @endif
                                                     </div>
 
                                                 </div>
@@ -186,15 +196,183 @@
             @endcan
 
             {{-- table card --}}
-            @can('super_admin_dashboard')
+            @can('lay_kader')
                 <div class="content-body">
                     <section id="table-home">
+                        {{-- Filter Nama Lansia --}}
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="filter-lansia">Filter Lansia:</label>
+                                    <select id="filter-lansia" class="form-control">
+                                        <option value="">Pilih Lansia</option>
+                                        @foreach ($lansia as $lansia_item)
+                                            <option value="{{ $lansia_item->nama }}">{{ $lansia_item->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Filter Bulan -->
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="filter-bulan">Filter Bulan:</label>
+                                    <select id="filter-bulan" class="form-control">
+                                        <option value="">Pilih Bulan</option>
+                                        @foreach (range(1, 12) as $month)
+                                            <option value="{{ $month }}">{{ date('F', mktime(0, 0, 0, $month, 10)) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Zero configuration table -->
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4 class="card-title">Layanan List</h4>
+                                        <h4 class="card-title">Layanan List Untuk Kader</h4>
+                                        <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
+                                        <div class="heading-elements">
+                                            <ul class="list-inline mb-0">
+                                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
+                                                <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="card-content collapse show">
+                                        <div class="card-body card-dashboard">
+                                            <div class="table-responsive">
+                                                <div class="buttons-wrapper">
+                                                    <!-- Buttons container will be appended here -->
+                                                </div>
+                                                <table
+                                                    class="table table-striped table-bordered text-inputs-searching default-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Tanggal</th>
+                                                            <th>Nama Lansia</th>
+                                                            <th>Berat Badan</th>
+                                                            <th>Tinggi Badan</th>
+                                                            <th>Tekanan Darah</th>
+                                                            <th>Keluhan</th>
+                                                            <th>Kader/Dokter</th>
+                                                            <th>Aksi Kader</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id="table-body">
+                                                        @forelse($layanan as $key => $layanan_item)
+                                                            <tr data-entry-id="{{ $layanan_item->id }}">
+                                                                <td>{{ date('d/m/Y', strtotime($layanan_item->created_at)) ?? '' }}
+                                                                </td>
+                                                                <td>{{ $layanan_item->lansia->nama ?? '' }}</td>
+                                                                <td>{{ $layanan_item->berat_badan . ' KG' ?? '' }}</td>
+                                                                <td>{{ $layanan_item->tinggi_badan . ' CM' ?? '' }}</td>
+                                                                <td>{{ $layanan_item->tekanan_darah . ' mmHg' ?? '' }}</td>
+                                                                <td>{{ $layanan_item->keluhan ?? '' }}</td>
+                                                                <td>{{ $layanan_item->petugas->nama ?? $layanan_item->user->name }}
+                                                                </td>
+                                                                <td class="text-center">
+                                                                    @can('layanan_edit')
+                                                                        <a href="{{ route('layanan.edit', $layanan_item->id) }}"
+                                                                            class="badge badge-warning"
+                                                                            data-tooltip="Tooltip on top" title="Edit">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                                height="20" viewBox="0 0 24 24"
+                                                                                style="fill: rgb(255, 255, 255);transform: ;msFilter:;">
+                                                                                <path
+                                                                                    d="M19.045 7.401c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.378-.378-.88-.586-1.414-.586s-1.036.208-1.413.585L4 13.585V18h4.413L19.045 7.401zm-3-3 1.587 1.585-1.59 1.584-1.586-1.585 1.589-1.584zM6 16v-1.585l7.04-7.018 1.586 1.586L7.587 16H6zm-2 4h16v2H4z">
+                                                                                </path>
+                                                                            </svg>
+                                                                        </a>
+                                                                    @endcan
+                                                                    @can('layanan_delete')
+                                                                        <a href="#" class="badge badge-danger"
+                                                                            data-tooltip="Tooltip on top" title="Hapus"
+                                                                            onclick="deletelayanan({{ $layanan_item->id }})">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="20"
+                                                                                height="20" viewBox="0 0 24 24"
+                                                                                style="fill: rgb(255, 255, 255);transform: ;msFilter:;">
+                                                                                <path
+                                                                                    d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8z">
+                                                                                </path>
+                                                                                <path d="M9 10h2v8H9zm4 0h2v8h-2z"></path>
+                                                                            </svg>
+                                                                        </a>
+                                                                    @endcan
+                                                                </td>
+                                                            </tr>
+                                                        @empty
+                                                            {{-- not found --}}
+                                                        @endforelse
+                                                    </tbody>
+                                                    <tfoot>
+                                                        <tr>
+                                                            <th>Tanggal</th>
+                                                            <th>Nama Lansia</th>
+                                                            <th>Berat Badan</th>
+                                                            <th>Tinggi Badan</th>
+                                                            <th>Tekanan Darah</th>
+                                                            <th>Keluhan</th>
+                                                            <th>Kader/Dokter</th>
+                                                            <th>Aksi Kader</th>
+                                                        </tr>
+                                                    </tfoot>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            @endcan
+
+            @can('lay_dokter')
+                <div class="content-body">
+                    <section id="table-home">
+                        {{-- Filter Nama Lansia --}}
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="filter-lansia">Filter Lansia:</label>
+                                    <select id="filter-lansia" class="form-control">
+                                        <option value="">Pilih Lansia</option>
+                                        @foreach ($lansia as $lansia_item)
+                                            <option value="{{ $lansia_item->nama }}">{{ $lansia_item->nama }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Filter Bulan -->
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="filter-bulan">Filter Bulan:</label>
+                                    <select id="filter-bulan" class="form-control">
+                                        <option value="">Pilih Bulan</option>
+                                        @foreach (range(1, 12) as $month)
+                                            <option value="{{ $month }}">{{ date('F', mktime(0, 0, 0, $month, 10)) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Zero configuration table -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Layanan List Untuk Dokter</h4>
                                         <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                         <div class="heading-elements">
                                             <ul class="list-inline mb-0">
@@ -221,8 +399,8 @@
                                                             <th>Tinggi Badan</th>
                                                             <th>Tekanan Darah</th>
                                                             <th>Keluhan</th>
-                                                            <th>Petugas</th>
-                                                            <th style="text-align:center; width:150px;">Aksi Admin</th>
+                                                            <th>Kader/Dokter</th>
+                                                            <th>Aksi Dokter</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -233,27 +411,11 @@
                                                                 <td>{{ $layanan_item->lansia->nama ?? '' }}</td>
                                                                 <td>{{ $layanan_item->berat_badan . ' KG' ?? '' }}</td>
                                                                 <td>{{ $layanan_item->tinggi_badan . ' CM' ?? '' }}</td>
-                                                                <td>{{ $layanan_item->tekanan_darah . ' mmHg' ?? '' }}</td>
+                                                                <td>{{ $layanan_item->tekanan_darah . ' mmHg' ?? '' }}
+                                                                </td>
                                                                 <td>{{ $layanan_item->keluhan ?? '' }}</td>
                                                                 <td>{{ $layanan_item->petugas->nama ?? '' }}</td>
                                                                 <td class="text-center">
-                                                                    @can('layanan_show')
-                                                                        <a href="#mymodal"
-                                                                            data-remote="{{ route('layanan.show', $layanan_item->id) }}"
-                                                                            data-toggle="modal" data-target="#mymodal"
-                                                                            data-title="Layanan Detail" class="badge badge-info"
-                                                                            data-tooltip="Tooltip on top" title="Lihat"><svg
-                                                                                xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                                height="20" viewBox="0 0 24 24"
-                                                                                style="fill: rgb(255, 255, 255);transform: ;msFilter:;">
-                                                                                <path
-                                                                                    d="M12 9a3.02 3.02 0 0 0-3 3c0 1.642 1.358 3 3 3 1.641 0 3-1.358 3-3 0-1.641-1.359-3-3-3z">
-                                                                                </path>
-                                                                                <path
-                                                                                    d="M12 5c-7.633 0-9.927 6.617-9.948 6.684L1.946 12l.105.316C2.073 12.383 4.367 19 12 19s9.927-6.617 9.948-6.684l.106-.316-.105-.316C21.927 11.617 19.633 5 12 5zm0 12c-5.351 0-7.424-3.846-7.926-5C4.578 10.842 6.652 7 12 7c5.351 0 7.424 3.846 7.926 5-.504 1.158-2.578 5-7.926 5z">
-                                                                                </path>
-                                                                            </svg></a>
-                                                                    @endcan
                                                                     @can('layanan_edit')
                                                                         <a href="{{ route('layanan.edit', $layanan_item->id) }}"
                                                                             class="badge badge-warning"
@@ -287,13 +449,14 @@
                                                     </tbody>
                                                     <tfoot>
                                                         <tr>
+                                                            <th>Tanggal</th>
                                                             <th>Nama Lansia</th>
                                                             <th>Berat Badan</th>
                                                             <th>Tinggi Badan</th>
                                                             <th>Tekanan Darah</th>
                                                             <th>Keluhan</th>
-                                                            <th>Petugas</th>
-                                                            <th style="text-align:center; width:150px;">Aksi Admin</th>
+                                                            <th>Kader/Dokter</th>
+                                                            <th>Aksi Dokter</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
@@ -308,15 +471,31 @@
                 </div>
             @endcan
 
-            @can('petugas_dashboard')
+            @can('lay_lansia')
                 <div class="content-body">
                     <section id="table-home">
+                        <!-- Filter Bulan -->
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="filter-bulan">Filter Bulan:</label>
+                                    <select id="filter-bulan" class="form-control">
+                                        <option value="">Pilih Bulan</option>
+                                        @foreach (range(1, 12) as $month)
+                                            <option value="{{ $month }}">{{ date('F', mktime(0, 0, 0, $month, 10)) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Zero configuration table -->
                         <div class="row">
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4 class="card-title">Layanan List</h4>
+                                        <h4 class="card-title">Layanan List Untuk Lansia</h4>
                                         <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                                         <div class="heading-elements">
                                             <ul class="list-inline mb-0">
@@ -330,9 +509,6 @@
                                         <div class="card-body card-dashboard">
 
                                             <div class="table-responsive">
-                                                <div class="buttons-wrapper">
-                                                    <!-- Buttons container will be appended here -->
-                                                </div>
                                                 <table
                                                     class="table table-striped table-bordered text-inputs-searching default-table">
                                                     <thead>
@@ -343,166 +519,24 @@
                                                             <th>Tinggi Badan</th>
                                                             <th>Tekanan Darah</th>
                                                             <th>Keluhan</th>
-                                                            <th>Petugas</th>
-                                                            <th style="text-align:center; width:150px;">Aksi Petugas</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @forelse($layananPetugas as $key => $layananPetugas_item)
-                                                            <tr data-entry-id="{{ $layananPetugas_item->id }}">
-                                                                <td>{{ date('d/m/Y', strtotime($layananPetugas_item->created_at)) ?? '' }}
-                                                                </td>
-                                                                <td>{{ $layananPetugas_item->lansia->nama ?? '' }}</td>
-                                                                <td>{{ $layananPetugas_item->berat_badan . ' KG' ?? '' }}</td>
-                                                                <td>{{ $layananPetugas_item->tinggi_badan . ' CM' ?? '' }}</td>
-                                                                <td>{{ $layananPetugas_item->tekanan_darah . ' mmHg' ?? '' }}</td>
-                                                                <td>{{ $layananPetugas_item->keluhan ?? '' }}</td>
-                                                                <td>{{ $layananPetugas_item->petugas->nama ?? '' }}</td>
-                                                                <td class="text-center">
-                                                                    @can('layanan_show')
-                                                                        <a href="#mymodal"
-                                                                            data-remote="{{ route('layanan.show', $layananPetugas_item->id) }}"
-                                                                            data-toggle="modal" data-target="#mymodal"
-                                                                            data-title="Layanan Detail" class="badge badge-info"
-                                                                            data-tooltip="Tooltip on top" title="Lihat"><svg
-                                                                                xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                                height="20" viewBox="0 0 24 24"
-                                                                                style="fill: rgb(255, 255, 255);transform: ;msFilter:;">
-                                                                                <path
-                                                                                    d="M12 9a3.02 3.02 0 0 0-3 3c0 1.642 1.358 3 3 3 1.641 0 3-1.358 3-3 0-1.641-1.359-3-3-3z">
-                                                                                </path>
-                                                                                <path
-                                                                                    d="M12 5c-7.633 0-9.927 6.617-9.948 6.684L1.946 12l.105.316C2.073 12.383 4.367 19 12 19s9.927-6.617 9.948-6.684l.106-.316-.105-.316C21.927 11.617 19.633 5 12 5zm0 12c-5.351 0-7.424-3.846-7.926-5C4.578 10.842 6.652 7 12 7c5.351 0 7.424 3.846 7.926 5-.504 1.158-2.578 5-7.926 5z">
-                                                                                </path>
-                                                                            </svg></a>
-                                                                    @endcan
-                                                                    @can('layanan_edit')
-                                                                        <a href="{{ route('layanan.edit', $layananPetugas_item->id) }}"
-                                                                            class="badge badge-warning"
-                                                                            data-tooltip="Tooltip on top" title="Edit"><svg
-                                                                                xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                                height="20" viewBox="0 0 24 24"
-                                                                                style="fill: rgb(255, 255, 255);transform: ;msFilter:;">
-                                                                                <path
-                                                                                    d="M19.045 7.401c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.378-.378-.88-.586-1.414-.586s-1.036.208-1.413.585L4 13.585V18h4.413L19.045 7.401zm-3-3 1.587 1.585-1.59 1.584-1.586-1.585 1.589-1.584zM6 16v-1.585l7.04-7.018 1.586 1.586L7.587 16H6zm-2 4h16v2H4z">
-                                                                                </path>
-                                                                            </svg></a>
-                                                                    @endcan
-                                                                    @can('layanan_delete')
-                                                                        <a href="#" class="badge badge-danger"
-                                                                            data-tooltip="Tooltip on top" title="Hapus"
-                                                                            onclick="deletelayanan({{ $layananPetugas_item->id }})"><svg
-                                                                                xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                                height="20" viewBox="0 0 24 24"
-                                                                                style="fill: rgb(255, 255, 255);transform: ;msFilter:;">
-                                                                                <path
-                                                                                    d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8z">
-                                                                                </path>
-                                                                                <path d="M9 10h2v8H9zm4 0h2v8h-2z"></path>
-                                                                            </svg></a>
-                                                                    @endcan
-                                                                </td>
-                                                            </tr>
-                                                        @empty
-                                                            {{-- not found --}}
-                                                        @endforelse
-                                                    </tbody>
-                                                    <tfoot>
-                                                        <tr>
-                                                            <th>Nama Lansia</th>
-                                                            <th>Berat Badan</th>
-                                                            <th>Tinggi Badan</th>
-                                                            <th>Tekanan Darah</th>
-                                                            <th>Keluhan</th>
-                                                            <th>Petugas</th>
-                                                            <th style="text-align:center; width:150px;">Aksi Petugas</th>
-                                                        </tr>
-                                                    </tfoot>
-                                                </table>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-            @endcan
-            @can('lansia_dashboard')
-                <div class="content-body">
-                    <section id="table-home">
-                        <!-- Zero configuration table -->
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h4 class="card-title">Layanan List</h4>
-                                        <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
-                                        <div class="heading-elements">
-                                            <ul class="list-inline mb-0">
-                                                <li><a data-action="collapse"><i class="ft-minus"></i></a></li>
-                                                <li><a data-action="expand"><i class="ft-maximize"></i></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <div class="card-content collapse show">
-                                        <div class="card-body card-dashboard">
-
-                                            <div class="table-responsive">
-                                                <table
-                                                    class="table table-striped table-bordered text-inputs-searching default-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Nama Lansia</th>
-                                                            <th>Berat Badan</th>
-                                                            <th>Tinggi Badan</th>
-                                                            <th>Tekanan Darah</th>
-                                                            <th>Keluhan</th>
-                                                            <th>Petugas</th>
-                                                            <th style="text-align:center; width:150px;">Aksi Lansia</th>
+                                                            <th>Kader/Dokter</th>
+                                                            <th>Aksi Lansia</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @forelse($layananLansia as $key => $layananLansia_item)
                                                             <tr data-entry-id="{{ $layananLansia_item->id }}">
+                                                                <td>{{ date('d/m/Y', strtotime($layananLansia_item->created_at)) ?? '' }}
+                                                                </td>
                                                                 <td>{{ $layananLansia_item->lansia->nama ?? '' }}</td>
                                                                 <td>{{ $layananLansia_item->berat_badan . ' KG' ?? '' }}</td>
                                                                 <td>{{ $layananLansia_item->tinggi_badan . ' CM' ?? '' }}</td>
-                                                                <td>{{ $layananLansia_item->tekanan_darah . ' mmHg' ?? '' }}</td>
+                                                                <td>{{ $layananLansia_item->tekanan_darah . ' mmHg' ?? '' }}
+                                                                </td>
                                                                 <td>{{ $layananLansia_item->keluhan ?? '' }}</td>
-                                                                <td>{{ $layananLansia_item->petugas->nama ?? '' }}</td>
+                                                                <td>{{ $layananLansia_item->petugas->nama ?? $layananLansia_item->user->name }}
+                                                                </td>
                                                                 <td class="text-center">
-                                                                    @can('layanan_show')
-                                                                        <a href="#mymodal"
-                                                                            data-remote="{{ route('layanan.show', $layananLansia_item->id) }}"
-                                                                            data-toggle="modal" data-target="#mymodal"
-                                                                            data-title="Layanan Detail" class="badge badge-info"
-                                                                            data-tooltip="Tooltip on top" title="Lihat"><svg
-                                                                                xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                                height="20" viewBox="0 0 24 24"
-                                                                                style="fill: rgb(255, 255, 255);transform: ;msFilter:;">
-                                                                                <path
-                                                                                    d="M12 9a3.02 3.02 0 0 0-3 3c0 1.642 1.358 3 3 3 1.641 0 3-1.358 3-3 0-1.641-1.359-3-3-3z">
-                                                                                </path>
-                                                                                <path
-                                                                                    d="M12 5c-7.633 0-9.927 6.617-9.948 6.684L1.946 12l.105.316C2.073 12.383 4.367 19 12 19s9.927-6.617 9.948-6.684l.106-.316-.105-.316C21.927 11.617 19.633 5 12 5zm0 12c-5.351 0-7.424-3.846-7.926-5C4.578 10.842 6.652 7 12 7c5.351 0 7.424 3.846 7.926 5-.504 1.158-2.578 5-7.926 5z">
-                                                                                </path>
-                                                                            </svg></a>
-                                                                    @endcan
-                                                                    @can('layanan_edit')
-                                                                        <a href="{{ route('layanan.edit', $layananLansia_item->id) }}"
-                                                                            class="badge badge-warning"
-                                                                            data-tooltip="Tooltip on top" title="Edit"><svg
-                                                                                xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                                height="20" viewBox="0 0 24 24"
-                                                                                style="fill: rgb(255, 255, 255);transform: ;msFilter:;">
-                                                                                <path
-                                                                                    d="M19.045 7.401c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.378-.378-.88-.586-1.414-.586s-1.036.208-1.413.585L4 13.585V18h4.413L19.045 7.401zm-3-3 1.587 1.585-1.59 1.584-1.586-1.585 1.589-1.584zM6 16v-1.585l7.04-7.018 1.586 1.586L7.587 16H6zm-2 4h16v2H4z">
-                                                                                </path>
-                                                                            </svg></a>
-                                                                    @endcan
                                                                     @can('layanan_show')
                                                                         <a href="#"
                                                                             onclick="printLayanan({{ $layananLansia_item->id }})"
@@ -517,19 +551,6 @@
                                                                             </svg>
                                                                         </a>
                                                                     @endcan
-                                                                    @can('layanan_delete')
-                                                                        <a href="#" class="badge badge-danger"
-                                                                            data-tooltip="Tooltip on top" title="Hapus"
-                                                                            onclick="deletelayanan({{ $layananLansia_item->id }})"><svg
-                                                                                xmlns="http://www.w3.org/2000/svg" width="20"
-                                                                                height="20" viewBox="0 0 24 24"
-                                                                                style="fill: rgb(255, 255, 255);transform: ;msFilter:;">
-                                                                                <path
-                                                                                    d="M5 20a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8h2V6h-4V4a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2v2H3v2h2zM9 4h6v2H9zM8 8h9v12H7V8z">
-                                                                                </path>
-                                                                                <path d="M9 10h2v8H9zm4 0h2v8h-2z"></path>
-                                                                            </svg></a>
-                                                                    @endcan
                                                                 </td>
                                                             </tr>
                                                         @empty
@@ -538,13 +559,14 @@
                                                     </tbody>
                                                     <tfoot>
                                                         <tr>
+                                                            <th>Tanggal</th>
                                                             <th>Nama Lansia</th>
                                                             <th>Berat Badan</th>
                                                             <th>Tinggi Badan</th>
                                                             <th>Tekanan Darah</th>
                                                             <th>Keluhan</th>
-                                                            <th>Petugas</th>
-                                                            <th style="text-align:center; width:150px;">Aksi Lansia</th>
+                                                            <th>Kader/Dokter</th>
+                                                            <th>Aksi Lansia</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>
@@ -655,7 +677,25 @@
                     stripHtml: false
                 }
             }).container().appendTo($('.buttons-wrapper'));
+
+            // Filter data berdasarkan lansia
+            $('#filter-lansia').on('change', function() {
+                var selectedLansia = $(this).val();
+                dataTable.column(1).search(selectedLansia).draw();
+            });
+
+            // Filter data berdasarkan bulan
+            $('#filter-bulan').on('change', function() {
+                var selectedMonth = $(this).val();
+                var searchValue = selectedMonth ? `/0?${selectedMonth}/` : '';
+
+                // Pastikan DataTable mencari berdasarkan bulan yang sesuai di kolom tanggal
+                dataTable.column(0).search(searchValue, true, false).draw();
+            });
         });
+
+
+
 
         $(function() {
             $(":input").inputmask();

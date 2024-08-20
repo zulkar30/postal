@@ -166,13 +166,22 @@ class LansiaController extends Controller
 
         // Buat array data untuk tabel 'lansia'
         $lansiaData = [
-            'foto' => $data['foto'] ?? $lansia->foto,
-            'telegram_username' => $data['telegram_username'] ?? $lansia->telegram_username,
+            'nama' => $data['nama'] ?? $lansia->nama ?? null,
+            'nik' => $data['nik'] ?? $lansia->nik ?? null,
+            'jenis_kelamin' => $data['jenis_kelamin'] ?? $lansia->jenis_kelamin ?? null,
+            'no_hp' => $data['no_hp'] ?? $lansia->no_hp ?? null,
+            'tempat_lahir' => $data['tempat_lahir'] ?? $lansia->tempat_lahir ?? null,
+            'tanggal_lahir' => $data['tanggal_lahir'] ?? $lansia->tanggal_lahir ?? null,
+            'foto' => $data['foto'] ?? $lansia->foto ?? null,
+            'telegram_username' => $data['telegram_username'] ?? $lansia->telegram_username ?? null,
         ];
 
         // Buat array data untuk tabel 'users'
         $userData = [
-            'foto' => $data['foto'] ?? $lansia->user->foto,
+            'name' => $data['nama'] ?? $lansia->user->name,
+            'email' => $data['email'] ?? $lansia->user->email,
+            'password' => Hash::make($data['email']) ?? $lansia->user->password,
+            'foto' => $data['foto'] ?? $lansia->user->foto ?? null,
         ];
 
         // Kirim data ke database

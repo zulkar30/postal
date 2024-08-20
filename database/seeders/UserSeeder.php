@@ -21,8 +21,18 @@ class UserSeeder extends Seeder
         $user = [
             [
                 'name'           => 'Abraham Lincoln',
-                'email'          => 'superadmin@gmail.com',
-                'password'       => Hash::make('superadmin@gmail.com'),
+                'email'          => 'kader@gmail.com',
+                'password'       => Hash::make('kader@gmail.com'),
+                'remember_token' => null,
+                'created_at'     => date('Y-m-d H:i:s'),
+                'updated_at'     => date('Y-m-d H:i:s'),
+                'lansia_id'      => null,
+                'petugas_id'     => null,
+            ],
+            [
+                'name'           => 'Dokter Muda',
+                'email'          => 'dokter@gmail.com',
+                'password'       => Hash::make('dokter@gmail.com'),
                 'remember_token' => null,
                 'created_at'     => date('Y-m-d H:i:s'),
                 'updated_at'     => date('Y-m-d H:i:s'),
@@ -30,9 +40,9 @@ class UserSeeder extends Seeder
                 'petugas_id'     => Petugas::first()->id ?? null,
             ],
             [
-                'name'           => 'Sapik',
-                'email'          => 'sapik@gmail.com',
-                'password'       => Hash::make('sapik@gmail.com'),
+                'name'           => 'Lansia Tua',
+                'email'          => 'lansia@gmail.com',
+                'password'       => Hash::make('lansia@gmail.com'),
                 'remember_token' => null,
                 'created_at'     => date('Y-m-d H:i:s'),
                 'updated_at'     => date('Y-m-d H:i:s'),

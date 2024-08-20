@@ -186,18 +186,18 @@
                                                             <th>Jam</th>
                                                             <th>Lokasi</th>
                                                             <th>Kegiatan</th>
-                                                            <th style="text-align:center; width:150px;">Aksi</th>
+                                                            <th>Aksi Jadwal</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         @forelse($jadwal as $key => $jadwal_item)
                                                             <tr data-entry-id="{{ $jadwal_item->id }}">
-                                                                <td>{{ $jadwal_item->tanggal ?? '' }}</td>
+                                                                <td>{{ date('d/m/Y', strtotime($jadwal_item->tanggal)) ?? '' }}</td>
                                                                 <td>{{ $jadwal_item->jam ?? '' }}</td>
                                                                 <td>{{ $jadwal_item->lokasi ?? '' }}</td>
                                                                 <td>{{ $jadwal_item->kegiatan ?? '' }}</td>
                                                                 <td class="text-center">
-                                                                    @can('jadwal_show')
+                                                                    {{-- @can('jadwal_show')
                                                                         <a href="#mymodal"
                                                                             data-remote="{{ route('jadwal.show', $jadwal_item->id) }}"
                                                                             data-toggle="modal" data-target="#mymodal"
@@ -213,7 +213,7 @@
                                                                                     d="M12 5c-7.633 0-9.927 6.617-9.948 6.684L1.946 12l.105.316C2.073 12.383 4.367 19 12 19s9.927-6.617 9.948-6.684l.106-.316-.105-.316C21.927 11.617 19.633 5 12 5zm0 12c-5.351 0-7.424-3.846-7.926-5C4.578 10.842 6.652 7 12 7c5.351 0 7.424 3.846 7.926 5-.504 1.158-2.578 5-7.926 5z">
                                                                                 </path>
                                                                             </svg></a>
-                                                                    @endcan
+                                                                    @endcan --}}
                                                                     @can('jadwal_edit')
                                                                         <a href="{{ route('jadwal.edit', $jadwal_item->id) }}"
                                                                             class="badge badge-warning"
@@ -250,7 +250,8 @@
                                                             <th>Tanggal</th>
                                                             <th>Jam</th>
                                                             <th>Lokasi</th>
-                                                            <th style="text-align:center; width:150px;">Aksi</th>
+                                                            <th>Kegiatan</th>
+                                                            <th>Aksi Jadwal</th>
                                                         </tr>
                                                     </tfoot>
                                                 </table>

@@ -25,20 +25,40 @@ class LayananController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // Middleware Gate
         abort_if(Gate::denies('layanan_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $loggedInUser = Auth::user();
-        $layananPetugas = Layanan::where('petugas_id', $loggedInUser->petugas_id)->orderBy('id', 'asc')->get();
-        $layananLansia = Layanan::where('lansia_id', $loggedInUser->lansia_id)->orderBy('id', 'asc')->get();
-        $layanan = Layanan::orderBy('id', 'asc')->get();
+        $bulan = $request->get('bulan');
+        $lansiaId = $request->get('lansia_id');
+
+        // Query dasar untuk mengambil data layanan
+        $query = Layanan::query();
+
+        // Filter berdasarkan bulan jika ada
+        if ($bulan) {
+            $query->whereMonth('created_at', $bulan);
+        }
+
+        // Filter berdasarkan petugas_id (untuk dokter/kader yang sedang login)
+        if ($loggedInUser->petugas_id) {
+            $query->where('petugas_id', $loggedInUser->petugas_id);
+        }
+
+        // Filter berdasarkan lansia_id (untuk lansia yang dipilih)
+        if ($lansiaId) {
+            $query->where('lansia_id', $lansiaId);
+        }
+
+        $layanan = $query->orderBy('id', 'asc')->get();
+
         $lansia = Lansia::orderBy('id', 'asc')->get();
         $petugas = Petugas::orderBy('id', 'asc')->get();
         $user = User::orderBy('id', 'asc')->get();
-        // dd($layanan);
-        return view('pages.layanan.index', compact('layanan', 'lansia', 'user', 'loggedInUser', 'petugas', 'layananPetugas', 'layananLansia'));
+
+        return view('pages.layanan.index', compact('layanan', 'lansia', 'user', 'loggedInUser', 'petugas'));
     }
 
     /**
@@ -139,7 +159,7 @@ class LayananController extends Controller
     public function print($id)
     {
         $layanan = Layanan::findOrFail($id);
-
+        // dd($layanan);
         // Load view for printing
         $pdf = PDF::loadView('pages.layanan.print', compact('layanan'));
 
